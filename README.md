@@ -18,7 +18,7 @@ The app has no `INTERNET` permission. Its demo sync performs a real RSA-3072 OAE
 
 ## Build
 
-The Android project uses Gradle 8.9, Android Gradle Plugin 8.7.3 and Java 17. The SDK is installed automatically on the GitHub Actions runner; a local Android SDK is needed for a local build.
+The Android project uses Gradle 9.8.2, Android Gradle Plugin 9.4.0 and Java 17. GitHub Actions uses the runner's preinstalled Gradle to avoid a first-build download timeout; a local Android SDK and internet access for Gradle dependencies are needed for a local build.
 
 ```bash
 cd android

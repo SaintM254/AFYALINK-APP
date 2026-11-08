@@ -24,7 +24,7 @@ concurrency:
 jobs:
   build:
     name: Build signed Android APK
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - name: Check out source
         uses: actions/checkout@v7
@@ -50,8 +50,8 @@ jobs:
       - name: Build release APK
         working-directory: android
         run: |
-          chmod +x ./gradlew
-          ./gradlew --no-daemon --stacktrace \
+          gradle --version
+          gradle --no-daemon --stacktrace \
             -Pafyalink.versionName='${{ steps.version.outputs.name }}' \
             -Pafyalink.versionCode='${{ github.run_number }}' \
             testReleaseUnitTest assembleRelease
