@@ -12,6 +12,8 @@ public final class SettingsStore {
         prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
+    public String profileName() { return prefs.getString("profile_name", ""); }
+    public void setProfileName(String name) { prefs.edit().putString("profile_name", name == null ? "" : name.trim()).apply(); }
     public boolean remindersEnabled() { return prefs.getBoolean("reminders_enabled", false); }
     public void setRemindersEnabled(boolean enabled) { prefs.edit().putBoolean("reminders_enabled", enabled).apply(); }
     public int reminderHour() { return prefs.getInt("reminder_hour", 8); }
@@ -21,7 +23,7 @@ public final class SettingsStore {
     }
     public boolean biometricLockEnabled() { return prefs.getBoolean("biometric_lock", false); }
     public void setBiometricLockEnabled(boolean enabled) { prefs.edit().putBoolean("biometric_lock", enabled).apply(); }
-    public String appearance() { return prefs.getString("appearance", "system"); }
+    public String appearance() { return prefs.getString("appearance", "light"); }
     public void setAppearance(String value) { prefs.edit().putString("appearance", value).apply(); }
     public boolean introSeen() { return prefs.getBoolean("intro_seen", false); }
     public void setIntroSeen() { prefs.edit().putBoolean("intro_seen", true).apply(); }

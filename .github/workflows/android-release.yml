@@ -100,8 +100,10 @@ jobs:
           cat > "$NOTES" <<NOTES_EOF
           ## Afyalink v${VERSION}
 
-          - Offline-first hypertension tracking; measurements stay encrypted on the device.
-          - Bluetooth SIG Blood Pressure Service (0x1810) monitor support plus manual entry.
+          - Offline-first blood-pressure tracking; measurements are encrypted and saved on the device.
+          - Dashboard-first manual entry with automatic MAP calculation using (SBP + 2 × DBP) ÷ 3.
+          - Clear navigation, editable greeting name, and direct Light / Dark / System appearance controls.
+          - Readings section explains SBP, DBP, MAP and educational blood-pressure categories.
           - Demo relay only: the encrypted exchange is verified locally and no readings are uploaded.
           - This build uses the repository's public demo signing key. Do not use it for Play Store distribution or sensitive production deployment.
 

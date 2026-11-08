@@ -1,142 +1,207 @@
 package com.afyalink.app.ui;
 
-import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.Gravity;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.SwitchCompat;
 
 import com.afyalink.app.R;
-import com.afyalink.app.security.SecurityGate;
 import com.afyalink.app.security.VaultKeyManager;
 import com.afyalink.app.storage.EncryptedReadingStore;
 import com.afyalink.app.storage.SettingsStore;
-import com.afyalink.app.util.Lucide;
 import com.afyalink.app.util.Ui;
 
 public final class SettingsActivity extends BaseActivity {
     private SettingsStore settings;
-    private TextView appearanceValue;
-    @Override protected void onCreate(@Nullable Bundle state) { super.onCreate(state);settings=new SettingsStore(this);render(); }
 
-    private void render() {
-        installPage(getString(R.string.settings_title),true);
-        content.addView(ScreenUi.eyebrow(this,getString(R.string.settings_eyebrow)));
-        TextView title=ScreenUi.title(this,getString(R.string.settings_title));
-        LinearLayout.LayoutParams tp=new LinearLayout.LayoutParams(-1,-2);tp.topMargin=Ui.dp(this,7);content.addView(title,tp);
-
-        LinearLayout appearance=ScreenUi.card(this);
-        LinearLayout arow=ScreenUi.horizontal(this);
-        TextView label=ScreenUi.text(this,getString(R.string.settings_appearance),16,Ui.color(this,R.color.text_primary),true);
-        arow.addView(label,new LinearLayout.LayoutParams(0,-2,1f));
-        appearanceValue=ScreenUi.paragraph(this,appearanceLabel());appearanceValue.setTextColor(Ui.color(this,R.color.brand_teal));
-        arow.addView(appearanceValue);
-        AppCompatImageButton toggleAppearance=new AppCompatImageButton(this);
-        toggleAppearance.setImageResource(Lucide.MOON);toggleAppearance.setImageTintList(ColorStateList.valueOf(Ui.color(this,R.color.brand_teal)));
-        toggleAppearance.setContentDescription(getString(R.string.cd_theme));toggleAppearance.setBackgroundResource(android.R.drawable.list_selector_background);
-        toggleAppearance.setPadding(Ui.dp(this,12),Ui.dp(this,12),Ui.dp(this,12),Ui.dp(this,12));
-        arow.addView(toggleAppearance,new LinearLayout.LayoutParams(Ui.dp(this,48),Ui.dp(this,48)));
-        appearance.addView(arow);
-        content.addView(appearance);
-        toggleAppearance.setOnClickListener(v->cycleAppearance());
-
-        LinearLayout security=ScreenUi.card(this);
-        LinearLayout sr=ScreenUi.horizontal(this);
-        android.widget.ImageView shield=Ui.icon(this,Lucide.LOCK,Ui.color(this,R.color.brand_teal),22);
-        sr.addView(shield,new LinearLayout.LayoutParams(Ui.dp(this,34),Ui.dp(this,34)));
-        LinearLayout scopy=new LinearLayout(this);scopy.setOrientation(LinearLayout.VERTICAL);
-        TextView st=ScreenUi.text(this,getString(R.string.settings_biometric),15,Ui.color(this,R.color.text_primary),true);scopy.addView(st);
-        TextView sb=ScreenUi.paragraph(this,getString(R.string.settings_biometric_body));sb.setTextSize(12);
-        LinearLayout.LayoutParams sbp=new LinearLayout.LayoutParams(-1,-2);sbp.topMargin=Ui.dp(this,4);scopy.addView(sb,sbp);
-        LinearLayout.LayoutParams scp=new LinearLayout.LayoutParams(0,-2,1f);scp.leftMargin=Ui.dp(this,8);sr.addView(scopy,scp);
-        SwitchCompat lock=new SwitchCompat(this);lock.setChecked(settings.biometricLockEnabled());lock.setContentDescription(getString(R.string.settings_biometric));sr.addView(lock);
-        security.addView(sr);
-        LinearLayout.LayoutParams secp=new LinearLayout.LayoutParams(-1,-2);secp.topMargin=Ui.dp(this,14);content.addView(security,secp);
-        installLockListener(lock);
-
-        LinearLayout reminder=ScreenUi.card(this);
-        LinearLayout rr=ScreenUi.horizontal(this);
-        TextView rt=ScreenUi.text(this,getString(R.string.menu_reminders),15,Ui.color(this,R.color.text_primary),true);rr.addView(rt,new LinearLayout.LayoutParams(0,-2,1f));
-        AppCompatImageButton rb=new AppCompatImageButton(this);rb.setImageResource(Lucide.BELL);rb.setImageTintList(ColorStateList.valueOf(Ui.color(this,R.color.brand_teal)));rb.setContentDescription(getString(R.string.cd_reminders));rb.setBackgroundResource(android.R.drawable.list_selector_background);rb.setPadding(Ui.dp(this,12),Ui.dp(this,12),Ui.dp(this,12),Ui.dp(this,12));rr.addView(rb,new LinearLayout.LayoutParams(Ui.dp(this,48),Ui.dp(this,48)));reminder.addView(rr);
-        LinearLayout.LayoutParams rp=new LinearLayout.LayoutParams(-1,-2);rp.topMargin=Ui.dp(this,14);content.addView(reminder,rp);rb.setOnClickListener(v->go(RemindersActivity.class));
-
-        LinearLayout about=ScreenUi.card(this);
-        LinearLayout ar=ScreenUi.horizontal(this);
-        TextView ab=ScreenUi.text(this,getString(R.string.settings_privacy),15,Ui.color(this,R.color.text_primary),true);ar.addView(ab,new LinearLayout.LayoutParams(0,-2,1f));
-        AppCompatImageButton abtn=new AppCompatImageButton(this);abtn.setImageResource(Lucide.SHIELD);abtn.setImageTintList(ColorStateList.valueOf(Ui.color(this,R.color.brand_teal)));abtn.setContentDescription(getString(R.string.cd_security));abtn.setBackgroundResource(android.R.drawable.list_selector_background);abtn.setPadding(Ui.dp(this,12),Ui.dp(this,12),Ui.dp(this,12),Ui.dp(this,12));ar.addView(abtn,new LinearLayout.LayoutParams(Ui.dp(this,48),Ui.dp(this,48)));about.addView(ar);
-        LinearLayout.LayoutParams ap=new LinearLayout.LayoutParams(-1,-2);ap.topMargin=Ui.dp(this,14);content.addView(about,ap);abtn.setOnClickListener(v->go(AboutActivity.class));
-
-        LinearLayout danger=ScreenUi.card(this,Ui.color(this,R.color.stage_grade3_soft),false);
-        LinearLayout dr=ScreenUi.horizontal(this);
-        TextView dt=ScreenUi.text(this,getString(R.string.settings_clear_data),15,Ui.color(this,R.color.stage_grade3_ink),true);dr.addView(dt,new LinearLayout.LayoutParams(0,-2,1f));
-        AppCompatImageButton wipe=new AppCompatImageButton(this);wipe.setImageResource(Lucide.DELETE);wipe.setImageTintList(ColorStateList.valueOf(Ui.color(this,R.color.stage_grade3_ink)));wipe.setContentDescription(getString(R.string.settings_clear_data));wipe.setBackgroundResource(android.R.drawable.list_selector_background);wipe.setPadding(Ui.dp(this,12),Ui.dp(this,12),Ui.dp(this,12),Ui.dp(this,12));dr.addView(wipe,new LinearLayout.LayoutParams(Ui.dp(this,48),Ui.dp(this,48)));danger.addView(dr);
-        TextView dangerNote=ScreenUi.paragraph(this,getString(R.string.settings_clear_data_body));dangerNote.setTextColor(Ui.color(this,R.color.stage_grade3_ink));LinearLayout.LayoutParams dn=new LinearLayout.LayoutParams(-1,-2);dn.topMargin=Ui.dp(this,6);danger.addView(dangerNote,dn);
-        LinearLayout.LayoutParams dlp=new LinearLayout.LayoutParams(-1,-2);dlp.topMargin=Ui.dp(this,14);content.addView(danger,dlp);
-        wipe.setOnClickListener(v->confirmWipe());
+    @Override protected void onCreate(@Nullable Bundle state) {
+        super.onCreate(state);
+        settings = new SettingsStore(this);
+        render();
     }
 
+    private void render() {
+        installPage(getString(R.string.settings_title), true);
+        content.addView(ScreenUi.eyebrow(this, getString(R.string.settings_eyebrow)));
+        TextView title = ScreenUi.title(this, getString(R.string.settings_title));
+        LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(-1, -2);
+        titleParams.topMargin = Ui.dp(this, 6);
+        titleParams.bottomMargin = Ui.dp(this, 16);
+        content.addView(title, titleParams);
 
-    private void installLockListener(SwitchCompat lock) {
-        lock.setOnCheckedChangeListener((button, checked) -> {
-            if (checked && !SecurityGate.available(this)) {
-                button.setOnCheckedChangeListener(null);
-                button.setChecked(false);
-                settings.setBiometricLockEnabled(false);
-                Toast.makeText(this, R.string.settings_biometric_unavailable, Toast.LENGTH_LONG).show();
-                installLockListener(lock);
-                return;
-            }
-            settings.setBiometricLockEnabled(checked);
+        addProfileSection();
+        addAppearanceSection();
+        addLinkSection(R.string.menu_reminders, R.string.settings_reminders_body,
+                RemindersActivity.class);
+        addLinkSection(R.string.settings_data, R.string.settings_data_body, SyncActivity.class);
+        addLinkSection(R.string.settings_about, R.string.settings_about_body, AboutActivity.class);
+        addClearDataSection();
+    }
+
+    private void addProfileSection() {
+        LinearLayout card = ScreenUi.card(this);
+        card.addView(ScreenUi.text(this, getString(R.string.settings_profile), 16,
+                Ui.color(this, R.color.text_primary), true));
+        TextView hint = ScreenUi.paragraph(this, getString(R.string.settings_name_hint));
+        LinearLayout.LayoutParams hintParams = new LinearLayout.LayoutParams(-1, -2);
+        hintParams.topMargin = Ui.dp(this, 4);
+        card.addView(hint, hintParams);
+
+        EditText name = new EditText(this);
+        name.setSingleLine(true);
+        name.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        name.setTextSize(16);
+        name.setTextColor(Ui.color(this, R.color.text_primary));
+        name.setHintTextColor(Ui.color(this, R.color.text_tertiary));
+        name.setHint(getString(R.string.settings_name));
+        name.setText(settings.profileName());
+        name.setBackground(Ui.roundedBox(this, Ui.color(this, R.color.surface_alt), 12));
+        name.setPadding(Ui.dp(this, 12), Ui.dp(this, 9), Ui.dp(this, 12), Ui.dp(this, 9));
+        LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(-1, Ui.dp(this, 52));
+        nameParams.topMargin = Ui.dp(this, 11);
+        card.addView(name, nameParams);
+
+        TextView saveName = actionButton(getString(R.string.settings_save_name));
+        LinearLayout.LayoutParams saveParams = new LinearLayout.LayoutParams(-1, Ui.dp(this, 46));
+        saveParams.topMargin = Ui.dp(this, 9);
+        card.addView(saveName, saveParams);
+        saveName.setOnClickListener(v -> {
+            settings.setProfileName(name.getText().toString());
+            Toast.makeText(this, R.string.settings_saved, Toast.LENGTH_SHORT).show();
+        });
+        content.addView(card);
+    }
+
+    private void addAppearanceSection() {
+        LinearLayout card = ScreenUi.card(this);
+        card.addView(ScreenUi.text(this, getString(R.string.settings_appearance), 16,
+                Ui.color(this, R.color.text_primary), true));
+        TextView hint = ScreenUi.paragraph(this, getString(R.string.settings_appearance_body));
+        LinearLayout.LayoutParams hintParams = new LinearLayout.LayoutParams(-1, -2);
+        hintParams.topMargin = Ui.dp(this, 4);
+        card.addView(hint, hintParams);
+
+        LinearLayout choices = ScreenUi.horizontal(this);
+        choices.setGravity(Gravity.CENTER_VERTICAL);
+        addAppearanceChoice(choices, "light", R.string.settings_theme_light);
+        addAppearanceChoice(choices, "dark", R.string.settings_theme_dark);
+        addAppearanceChoice(choices, "system", R.string.settings_theme_system);
+        LinearLayout.LayoutParams choicesParams = new LinearLayout.LayoutParams(-1, Ui.dp(this, 46));
+        choicesParams.topMargin = Ui.dp(this, 12);
+        card.addView(choices, choicesParams);
+        LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(-1, -2);
+        cardParams.topMargin = Ui.dp(this, 12);
+        content.addView(card, cardParams);
+    }
+
+    private void addAppearanceChoice(LinearLayout parent, String value, int labelRes) {
+        boolean selected = value.equals(settings.appearance());
+        TextView choice = ScreenUi.text(this, getString(labelRes), 12,
+                Ui.color(this, selected ? R.color.text_on_brand : R.color.text_secondary), true);
+        choice.setGravity(Gravity.CENTER);
+        choice.setBackground(Ui.roundedBox(this,
+                Ui.color(this, selected ? R.color.brand_teal : R.color.surface_alt), 12,
+                Ui.color(this, selected ? R.color.brand_teal : R.color.hairline), 1));
+        choice.setFocusable(true);
+        choice.setClickable(true);
+        choice.setContentDescription(getString(labelRes));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, -1, 1f);
+        if (parent.getChildCount() > 0) params.leftMargin = Ui.dp(this, 6);
+        parent.addView(choice, params);
+        choice.setOnClickListener(v -> {
+            settings.setAppearance(value);
+            int mode = "light".equals(value) ? AppCompatDelegate.MODE_NIGHT_NO
+                    : "dark".equals(value) ? AppCompatDelegate.MODE_NIGHT_YES
+                    : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+            AppCompatDelegate.setDefaultNightMode(mode);
         });
     }
 
-    private String appearanceLabel() {
-        String value=settings.appearance();
-        if("light".equals(value))return getString(R.string.settings_theme_light);
-        if("dark".equals(value))return getString(R.string.settings_theme_dark);
-        return getString(R.string.settings_theme_system);
+    private void addLinkSection(int titleRes, int bodyRes, Class<?> destination) {
+        LinearLayout card = ScreenUi.card(this);
+        card.setFocusable(true);
+        card.setClickable(true);
+        card.setBackground(Ui.roundedBox(this, Ui.color(this, R.color.surface), 18,
+                Ui.color(this, R.color.hairline), 1));
+        card.addView(ScreenUi.text(this, getString(titleRes), 15,
+                Ui.color(this, R.color.text_primary), true));
+        TextView body = ScreenUi.paragraph(this, getString(bodyRes));
+        LinearLayout.LayoutParams bodyParams = new LinearLayout.LayoutParams(-1, -2);
+        bodyParams.topMargin = Ui.dp(this, 4);
+        card.addView(body, bodyParams);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2);
+        params.topMargin = Ui.dp(this, 12);
+        content.addView(card, params);
+        card.setOnClickListener(v -> go(destination));
     }
-    private void cycleAppearance() {
-        String next="system".equals(settings.appearance())?"light":"light".equals(settings.appearance())?"dark":"system";
-        settings.setAppearance(next);
-        int mode="light".equals(next)?AppCompatDelegate.MODE_NIGHT_NO:"dark".equals(next)?AppCompatDelegate.MODE_NIGHT_YES:AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
-        AppCompatDelegate.setDefaultNightMode(mode);
-        appearanceValue.setText(appearanceLabel());
+
+    private void addClearDataSection() {
+        LinearLayout card = ScreenUi.card(this, Ui.color(this, R.color.stage_grade3_soft), false);
+        card.addView(ScreenUi.text(this, getString(R.string.settings_clear_data), 15,
+                Ui.color(this, R.color.stage_grade3_ink), true));
+        TextView body = ScreenUi.paragraph(this, getString(R.string.settings_clear_data_body));
+        body.setTextColor(Ui.color(this, R.color.stage_grade3_ink));
+        LinearLayout.LayoutParams bodyParams = new LinearLayout.LayoutParams(-1, -2);
+        bodyParams.topMargin = Ui.dp(this, 4);
+        card.addView(body, bodyParams);
+        card.setFocusable(true);
+        card.setClickable(true);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2);
+        params.topMargin = Ui.dp(this, 12);
+        content.addView(card, params);
+        card.setOnClickListener(v -> confirmWipe());
     }
+
+    private TextView actionButton(String text) {
+        TextView button = ScreenUi.text(this, text, 13, Ui.color(this, R.color.text_on_brand), true);
+        button.setGravity(Gravity.CENTER);
+        button.setBackground(Ui.roundedBox(this, Ui.color(this, R.color.brand_teal), 13));
+        button.setFocusable(true);
+        button.setClickable(true);
+        return button;
+    }
+
     private void confirmWipe() {
         android.app.Dialog dialog = new android.app.Dialog(this);
         LinearLayout box = new LinearLayout(this);
         box.setOrientation(LinearLayout.VERTICAL);
-        box.setPadding(Ui.dp(this,22),Ui.dp(this,22),Ui.dp(this,22),Ui.dp(this,18));
-        box.setBackground(Ui.roundedBox(this,Ui.color(this,R.color.surface),24));
-        TextView title = ScreenUi.title(this,getString(R.string.settings_clear_confirm_title));
+        box.setPadding(Ui.dp(this, 22), Ui.dp(this, 22), Ui.dp(this, 22), Ui.dp(this, 18));
+        box.setBackground(Ui.roundedBox(this, Ui.color(this, R.color.surface), 24));
+        TextView title = ScreenUi.title(this, getString(R.string.settings_clear_confirm_title));
         title.setTextSize(20);
         box.addView(title);
-        TextView body = ScreenUi.paragraph(this,getString(R.string.settings_clear_confirm_body));
-        LinearLayout.LayoutParams bp = new LinearLayout.LayoutParams(-1,-2);bp.topMargin=Ui.dp(this,8);box.addView(body,bp);
-        LinearLayout actions = ScreenUi.horizontal(this);actions.setGravity(android.view.Gravity.END);
-        LinearLayout.LayoutParams ap = new LinearLayout.LayoutParams(-1,-2);ap.topMargin=Ui.dp(this,16);box.addView(actions,ap);
-        AppCompatImageButton cancel = new AppCompatImageButton(this);
-        cancel.setImageResource(Lucide.CLOSE);cancel.setContentDescription(getString(R.string.cd_close));
-        cancel.setBackgroundResource(android.R.drawable.list_selector_background);
-        actions.addView(cancel,new LinearLayout.LayoutParams(Ui.dp(this,50),Ui.dp(this,50)));
-        AppCompatImageButton erase = new AppCompatImageButton(this);
-        erase.setImageResource(Lucide.DELETE);erase.setContentDescription(getString(R.string.settings_clear_data));
-        erase.setImageTintList(ColorStateList.valueOf(Ui.color(this,R.color.brand_white)));
-        erase.setBackground(Ui.roundedBox(this,Ui.color(this,R.color.danger),16));
-        LinearLayout.LayoutParams ep = new LinearLayout.LayoutParams(Ui.dp(this,50),Ui.dp(this,50));ep.leftMargin=Ui.dp(this,8);actions.addView(erase,ep);
-        cancel.setOnClickListener(v->dialog.dismiss());
-        erase.setOnClickListener(v->{
-            try { new EncryptedReadingStore(this).clear(); VaultKeyManager.deleteAll(); Toast.makeText(this,R.string.settings_cleared,Toast.LENGTH_LONG).show(); finish(); }
-            catch(Exception e){Toast.makeText(this,R.string.sync_failed,Toast.LENGTH_LONG).show();}
-            dialog.dismiss();
+        TextView body = ScreenUi.paragraph(this, getString(R.string.settings_clear_confirm_body));
+        LinearLayout.LayoutParams bodyParams = new LinearLayout.LayoutParams(-1, -2);
+        bodyParams.topMargin = Ui.dp(this, 8);
+        box.addView(body, bodyParams);
+        TextView erase = actionButton(getString(R.string.settings_clear_data));
+        erase.setBackground(Ui.roundedBox(this, Ui.color(this, R.color.danger), 14));
+        LinearLayout.LayoutParams eraseParams = new LinearLayout.LayoutParams(-1, Ui.dp(this, 50));
+        eraseParams.topMargin = Ui.dp(this, 16);
+        box.addView(erase, eraseParams);
+        erase.setOnClickListener(v -> {
+            try {
+                new EncryptedReadingStore(this).clear();
+                VaultKeyManager.deleteAll();
+                Toast.makeText(this, R.string.settings_cleared, Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+                render();
+            } catch (Exception e) {
+                Toast.makeText(this, R.string.local_save_failed, Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+            }
         });
-        dialog.setContentView(box);dialog.show();
-        if(dialog.getWindow()!=null){dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);dialog.getWindow().setLayout((int)(getResources().getDisplayMetrics().widthPixels*.88),-2);}
+        dialog.setContentView(box);
+        dialog.show();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.getWindow().setLayout((int) (getResources().getDisplayMetrics().widthPixels * .88), -2);
+        }
     }
 }

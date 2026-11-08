@@ -4,8 +4,10 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -20,7 +22,6 @@ import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.afyalink.app.R;
 import com.afyalink.app.domain.BloodPressureReading;
-import com.afyalink.app.domain.BpStage;
 import com.afyalink.app.storage.EncryptedReadingStore;
 import com.afyalink.app.util.Format;
 import com.afyalink.app.util.Lucide;
@@ -31,6 +32,7 @@ import java.util.UUID;
 
 public final class LogReadingActivity extends BaseActivity {
     private EditText systolic, diastolic, pulse, note;
+    private TextView mapPreview;
     private long measuredAt = System.currentTimeMillis();
     private BloodPressureReading editing;
     private TextView dateValue;
@@ -57,6 +59,19 @@ public final class LogReadingActivity extends BaseActivity {
         addPressureField(card, getString(R.string.log_systolic), getString(R.string.log_systolic_hint), 260, true);
         card.addView(ScreenUi.hairline(this));
         addPressureField(card, getString(R.string.log_diastolic), getString(R.string.log_diastolic_hint), 150, false);
+        mapPreview = ScreenUi.paragraph(this, getString(R.string.map_preview_empty));
+        mapPreview.setTextColor(Ui.color(this, R.color.brand_teal));
+        mapPreview.setTypeface(android.graphics.Typeface.create("sans-serif-medium", 0));
+        LinearLayout.LayoutParams mapParams = new LinearLayout.LayoutParams(-1, -2);
+        mapParams.topMargin = Ui.dp(this, 8);
+        card.addView(mapPreview, mapParams);
+        TextWatcher mapWatcher = new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { updateMapPreview(); }
+            @Override public void afterTextChanged(Editable s) {}
+        };
+        systolic.addTextChangedListener(mapWatcher);
+        diastolic.addTextChangedListener(mapWatcher);
         LinearLayout.LayoutParams cp = new LinearLayout.LayoutParams(-1, -2);
         cp.bottomMargin = Ui.dp(this, 14);
         content.addView(card, cp);
@@ -219,6 +234,18 @@ public final class LogReadingActivity extends BaseActivity {
 
     private void updateDate() { if (dateValue != null) dateValue.setText(Format.date(this, measuredAt)); }
 
+    private void updateMapPreview() {
+        if (mapPreview == null || systolic == null || diastolic == null) return;
+        try {
+            int sys = Integer.parseInt(systolic.getText().toString().trim());
+            int dia = Integer.parseInt(diastolic.getText().toString().trim());
+            if (sys <= dia || sys < 40 || dia < 20) throw new NumberFormatException();
+            mapPreview.setText(getString(R.string.map_preview, Math.round((sys + 2f * dia) / 3f)));
+        } catch (NumberFormatException e) {
+            mapPreview.setText(getString(R.string.map_preview_empty));
+        }
+    }
+
     private void save() {
         try {
             int sys = parse(systolic), dia = parse(diastolic);
@@ -238,7 +265,7 @@ public final class LogReadingActivity extends BaseActivity {
         } catch (NumberFormatException e) {
             systolic.setError(getString(R.string.log_error_systolic));
         } catch (Exception e) {
-            Toast.makeText(this, getString(R.string.sync_failed), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.local_save_failed), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -268,7 +295,7 @@ public final class LogReadingActivity extends BaseActivity {
         yes.setBackground(Ui.roundedBox(this, Ui.color(this, R.color.danger), 16));
         LinearLayout.LayoutParams yp = new LinearLayout.LayoutParams(Ui.dp(this, 50), Ui.dp(this, 50)); yp.leftMargin = Ui.dp(this, 8); actions.addView(yes, yp);
         cancel.setOnClickListener(v -> dialog.dismiss());
-        yes.setOnClickListener(v -> { try { new EncryptedReadingStore(this).delete(editing.id); Toast.makeText(this,R.string.log_deleted,Toast.LENGTH_SHORT).show(); finish(); } catch (Exception e) { Toast.makeText(this,R.string.sync_failed,Toast.LENGTH_SHORT).show(); } dialog.dismiss(); });
+        yes.setOnClickListener(v -> { try { new EncryptedReadingStore(this).delete(editing.id); Toast.makeText(this,R.string.log_deleted,Toast.LENGTH_SHORT).show(); finish(); } catch (Exception e) { Toast.makeText(this,R.string.local_save_failed,Toast.LENGTH_SHORT).show(); } dialog.dismiss(); });
         dialog.setContentView(box); if (dialog.getWindow()!=null) { dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); dialog.getWindow().setLayout((int)(getResources().getDisplayMetrics().widthPixels*.88),-2); }
         dialog.show(); if (dialog.getWindow()!=null) { dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent); dialog.getWindow().setLayout((int)(getResources().getDisplayMetrics().widthPixels*.88),-2); }
     }

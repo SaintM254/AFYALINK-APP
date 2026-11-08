@@ -45,6 +45,7 @@ public final class HistoryActivity extends BaseActivity {
             if (filter.equals("all") || (filter.equals("high") && r.stage().isHigh())
                     || (filter.equals("normal") && !r.stage().isHigh() && r.stage() != com.afyalink.app.domain.BpStage.LOW)) rows.add(r);
         }
+        renderReadingKey(all.isEmpty() ? null : all.get(0));
         TextView count = ScreenUi.paragraph(this, getString(R.string.history_count, rows.size()) + "  ·  " +
                 getString(filter.equals("all") ? R.string.history_filter_all : filter.equals("high") ? R.string.history_filter_high : R.string.history_filter_normal));
         LinearLayout.LayoutParams cp = new LinearLayout.LayoutParams(-1, -2); cp.topMargin = Ui.dp(this, 10); cp.bottomMargin = Ui.dp(this, 14); content.addView(count, cp);
@@ -63,7 +64,9 @@ public final class HistoryActivity extends BaseActivity {
             LinearLayout left = new LinearLayout(this); left.setOrientation(LinearLayout.VERTICAL);
             TextView value = ScreenUi.text(this, Format.pressure(r.systolic, r.diastolic), 25, Ui.color(this, R.color.text_primary), true);
             left.addView(value);
-            TextView meta = ScreenUi.paragraph(this, Format.date(this, r.measuredAt) + (r.pulse > 0 ? "  ·  " + r.pulse + " bpm" : ""));
+            TextView meta = ScreenUi.paragraph(this, Format.date(this, r.measuredAt)
+                    + (r.pulse > 0 ? "  ·  " + r.pulse + " bpm" : "")
+                    + "  ·  " + getString(R.string.map_value, r.meanArterialPressureRounded()));
             meta.setTextSize(11);
             LinearLayout.LayoutParams mp = new LinearLayout.LayoutParams(-1, -2); mp.topMargin = Ui.dp(this, 5); left.addView(meta, mp);
             row.addView(left, new LinearLayout.LayoutParams(0, -2, 1f));
@@ -82,5 +85,30 @@ public final class HistoryActivity extends BaseActivity {
             open.setOnClickListener(v -> { android.content.Intent in = new android.content.Intent(this, LogReadingActivity.class); in.putExtra("reading_id", r.id); startActivity(in); });
             LinearLayout.LayoutParams rp = new LinearLayout.LayoutParams(-1, -2); rp.bottomMargin = Ui.dp(this, 10); content.addView(card, rp);
         }
+    }
+
+    private void renderReadingKey(@Nullable BloodPressureReading latest) {
+        LinearLayout card = ScreenUi.card(this, Ui.color(this, R.color.surface), false);
+        card.addView(ScreenUi.text(this, getString(R.string.readings_key_title), 16,
+                Ui.color(this, R.color.text_primary), true));
+        TextView body = ScreenUi.paragraph(this, getString(R.string.readings_key_body));
+        LinearLayout.LayoutParams bodyParams = new LinearLayout.LayoutParams(-1, -2);
+        bodyParams.topMargin = Ui.dp(this, 7);
+        card.addView(body, bodyParams);
+        StageScaleView scale = new StageScaleView(this);
+        scale.setShowLabels(true);
+        if (latest != null) scale.setStage(latest.stage());
+        LinearLayout.LayoutParams scaleParams = new LinearLayout.LayoutParams(-1, Ui.dp(this, 55));
+        scaleParams.topMargin = Ui.dp(this, 12);
+        card.addView(scale, scaleParams);
+        TextView ranges = ScreenUi.paragraph(this, getString(R.string.readings_scale_ranges));
+        ranges.setTextSize(11);
+        LinearLayout.LayoutParams rangesParams = new LinearLayout.LayoutParams(-1, -2);
+        rangesParams.topMargin = Ui.dp(this, 8);
+        card.addView(ranges, rangesParams);
+        LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(-1, -2);
+        cardParams.topMargin = Ui.dp(this, 10);
+        cardParams.bottomMargin = Ui.dp(this, 12);
+        content.addView(card, cardParams);
     }
 }

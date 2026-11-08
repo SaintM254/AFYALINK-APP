@@ -141,29 +141,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         frame.addView(overlay, whole);
         menuOverlay = overlay;
 
-        LinearLayout top = new LinearLayout(this);
-        top.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
-        top.setPadding(Ui.dp(this, 20), Ui.dp(this, 8), Ui.dp(this, 16), Ui.dp(this, 8));
-        overlay.addView(top, new LinearLayout.LayoutParams(-1, Ui.dp(this, 72)));
-        ImageButton close = new ImageButton(this);
-        close.setImageResource(Lucide.CLOSE);
-        close.setImageTintList(android.content.res.ColorStateList.valueOf(Ui.color(this, R.color.text_on_brand)));
-        close.setBackgroundResource(android.R.drawable.list_selector_background);
-        close.setContentDescription(getString(R.string.cd_close));
-        close.setPadding(Ui.dp(this, 13), Ui.dp(this, 13), Ui.dp(this, 13), Ui.dp(this, 13));
-        top.addView(close, new LinearLayout.LayoutParams(Ui.dp(this, 52), Ui.dp(this, 52)));
-        close.setOnClickListener(v -> hideMenu());
-
-        TextView eyebrow = new TextView(this);
-        eyebrow.setText(getString(R.string.menu_eyebrow));
-        eyebrow.setTextColor(Ui.color(this, R.color.text_on_brand_muted));
-        eyebrow.setTextSize(11);
-        eyebrow.setTypeface(Typeface.create("sans-serif-medium", 0));
-        eyebrow.setLetterSpacing(0.24f);
-        eyebrow.setPadding(0, Ui.dp(this, 8), Ui.dp(this, 26), Ui.dp(this, 10));
-        LinearLayout.LayoutParams eyebrowParams = new LinearLayout.LayoutParams(-1, -2);
-        eyebrowParams.topMargin = Ui.dp(this, 30);
-        overlay.addView(eyebrow, eyebrowParams);
+        TextView menuTitle = new TextView(this);
+        menuTitle.setText(getString(R.string.app_name));
+        menuTitle.setTextColor(Ui.color(this, R.color.text_on_brand_muted));
+        menuTitle.setTextSize(14);
+        menuTitle.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+        menuTitle.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+        menuTitle.setPadding(Ui.dp(this, 20), Ui.dp(this, 8), Ui.dp(this, 26), Ui.dp(this, 8));
+        overlay.addView(menuTitle, new LinearLayout.LayoutParams(-1, Ui.dp(this, 72)));
 
         ScrollView menuScroll = new ScrollView(this);
         menuScroll.setFillViewport(false);
@@ -177,28 +162,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         addMenuItem(items, R.string.menu_dashboard, MainActivity.class, 34);
         addMenuItem(items, R.string.menu_readings, HistoryActivity.class, 34);
-        addMenuItem(items, R.string.menu_monitor, MonitorActivity.class, 34);
         addMenuItem(items, R.string.menu_trends, TrendsActivity.class, 34);
         addMenuItem(items, R.string.menu_reminders, RemindersActivity.class, 34);
-        addMenuItem(items, R.string.menu_sync, SyncActivity.class, 34);
         addMenuItem(items, R.string.menu_settings, SettingsActivity.class, 34);
-        addMenuItem(items, R.string.menu_about, AboutActivity.class, 34);
 
         LinearLayout bottom = new LinearLayout(this);
-        bottom.setOrientation(LinearLayout.VERTICAL);
+        bottom.setGravity(Gravity.CENTER_HORIZONTAL);
         bottom.setPadding(Ui.dp(this, 20), Ui.dp(this, 10), Ui.dp(this, 20), Ui.dp(this, 22));
         overlay.addView(bottom, new LinearLayout.LayoutParams(-1, -2));
-        ImageButton log = new ImageButton(this);
-        log.setImageResource(Lucide.ADD);
-        log.setImageTintList(android.content.res.ColorStateList.valueOf(Ui.color(this, R.color.brand_teal_logo)));
-        log.setBackground(Ui.roundedBox(this, Ui.color(this, R.color.menu_button_surface), 18));
-        log.setContentDescription(getString(R.string.cd_add_reading));
-        log.setPadding(Ui.dp(this, 17), Ui.dp(this, 17), Ui.dp(this, 17), Ui.dp(this, 17));
-        LinearLayout.LayoutParams logParams = new LinearLayout.LayoutParams(-1, Ui.dp(this, 64));
-        logParams.bottomMargin = Ui.dp(this, 10);
-        bottom.addView(log, logParams);
-        log.setOnClickListener(v -> { hideMenu(); startActivity(new Intent(this, LogReadingActivity.class)); });
-
         ImageButton closeBottom = new ImageButton(this);
         closeBottom.setImageResource(Lucide.CLOSE);
         closeBottom.setImageTintList(android.content.res.ColorStateList.valueOf(Ui.color(this, R.color.text_on_brand)));
@@ -206,7 +177,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 Ui.color(this, R.color.text_on_brand_muted), 1));
         closeBottom.setContentDescription(getString(R.string.cd_close));
         closeBottom.setPadding(Ui.dp(this, 19), Ui.dp(this, 15), Ui.dp(this, 19), Ui.dp(this, 15));
-        bottom.addView(closeBottom, new LinearLayout.LayoutParams(-1, Ui.dp(this, 58)));
+        bottom.addView(closeBottom, new LinearLayout.LayoutParams(Ui.dp(this, 56), Ui.dp(this, 56)));
         closeBottom.setOnClickListener(v -> hideMenu());
 
         overlay.setAlpha(0f);

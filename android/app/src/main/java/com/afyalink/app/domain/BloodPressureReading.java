@@ -44,6 +44,16 @@ public final class BloodPressureReading {
         return BpStage.classify(systolic, diastolic);
     }
 
+    /** Estimated mean arterial pressure in mmHg: (SBP + 2 × DBP) / 3. */
+    public double meanArterialPressure() {
+        return (systolic + 2.0 * diastolic) / 3.0;
+    }
+
+    /** Rounded whole-mmHg value for compact UI display. */
+    public int meanArterialPressureRounded() {
+        return (int) Math.round(meanArterialPressure());
+    }
+
     public BloodPressureReading withSynced(boolean value) {
         return new BloodPressureReading(id, measuredAt, systolic, diastolic, pulse, note, source, value);
     }
