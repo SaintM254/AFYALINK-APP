@@ -61,7 +61,7 @@ jobs:
           cat build.log
           if [[ "$RESULT" -ne 0 ]]; then
             echo "::group::Gradle error details"
-            grep -E 'FAILURE:|What went wrong:|Could not |Could not find|Execution failed|Caused by:|^> ' build.log | head -n 35 | sed 's/^/::error::/'
+            awk '/^\\* What went wrong:/{print; for (i = 0; i < 12; i++) { if (getline) print; else exit }}' build.log | sed 's/^/::error::/'
             echo "::endgroup::"
           fi
           exit "$RESULT"
