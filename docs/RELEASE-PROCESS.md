@@ -2,7 +2,7 @@
 
 ## Current release
 
-The intended first release is **Afyalink v1.0.0**, tag `v1.0.0`. The workflow uses the Ubuntu 26.04 runner's preinstalled Gradle 9.8.2 with Android Gradle Plugin 9.4.0, builds `assembleRelease`, runs the release unit tests, calculates SHA-256, uploads an Actions artifact, and creates or updates a GitHub Release with the APK and checksum attached.
+The intended first release is **Afyalink v1.0.0**, tag `v1.0.0`. The workflow uses the Ubuntu 26.04 runner's preinstalled Gradle 9.8.2 with Android Gradle Plugin 9.4.0, runs the debug-variant JVM unit tests and builds `assembleRelease`, calculates SHA-256, uploads an Actions artifact, and creates or updates a GitHub Release with the APK and checksum attached.
 
 ## Why the workflow may not appear in GitHub's workflow list
 
@@ -34,7 +34,7 @@ Use Java 17 and an Android SDK with API 35 installed:
 
 ```bash
 cd android
-./gradlew testReleaseUnitTest assembleRelease
+./gradlew testDebugUnitTest assembleRelease
 ```
 
 Output: `android/app/build/outputs/apk/release/app-release.apk`.

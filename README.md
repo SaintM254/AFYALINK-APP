@@ -22,7 +22,7 @@ The Android project uses Gradle 9.8.2, Android Gradle Plugin 9.4.0 and Java 17. 
 
 ```bash
 cd android
-./gradlew testReleaseUnitTest assembleRelease
+./gradlew testDebugUnitTest assembleRelease
 ```
 
 The signed APK is written to `android/app/build/outputs/apk/release/app-release.apk`.
