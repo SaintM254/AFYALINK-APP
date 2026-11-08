@@ -91,6 +91,8 @@
          Controls. Every action control is icon-only: no visible label, but a
          content description for TalkBack.
          ===================================================================== -->
+    <style name="Widget.AfyaLink" parent="@android:style/Widget" />
+
     <style name="Widget.AfyaLink.IconButton">
         <item name="android:layout_width">@dimen/touch_target</item>
         <item name="android:layout_height">@dimen/touch_target</item>

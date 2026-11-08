@@ -67,5 +67,7 @@
     <color name="success">#FF2E6B47</color>
     <color name="warning">#FFB8781F</color>
     <color name="danger">#FFC63C34</color>
+    <color name="switch_thumb">#FFFFFFFF</color>
+    <color name="switch_track">#FF939B9B</color>
     <color name="transparent">#00000000</color>
 </resources>
