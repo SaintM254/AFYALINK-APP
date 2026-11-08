@@ -5,6 +5,8 @@
          Type scale. Everything is a clean geometric sans (Roboto / SF-adjacent)
          with tight negative tracking on the big sizes, Apple style.
          ===================================================================== -->
+    <style name="Text.AfyaLink" parent="TextAppearance.Material3.BodyMedium" />
+
     <style name="Text.AfyaLink.Eyebrow">
         <item name="android:textSize">@dimen/text_eyebrow</item>
         <item name="android:textColor">@color/text_tertiary</item>
