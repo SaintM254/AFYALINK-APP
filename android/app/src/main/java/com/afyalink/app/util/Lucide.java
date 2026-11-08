@@ -25,5 +25,7 @@ public final class Lucide {
     @DrawableRes public static final int DELETE = R.drawable.ic_trash;
     @DrawableRes public static final int FILTER = R.drawable.ic_filter;
     @DrawableRes public static final int HEART = R.drawable.ic_heart;
+    @DrawableRes public static final int MOON = R.drawable.ic_moon;
+    @DrawableRes public static final int CHECK = R.drawable.ic_check;
     @DrawableRes public static final int USER = R.drawable.ic_user;
 }
