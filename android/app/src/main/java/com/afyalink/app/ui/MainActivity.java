@@ -219,27 +219,41 @@ public final class MainActivity extends BaseActivity {
     }
 
     private void saveQuickReading() {
+        final int sys;
+        final int dia;
+        final int pulse;
         try {
-            int sys = parse(systolicInput);
-            int dia = parse(diastolicInput);
+            sys = parse(systolicInput);
+            dia = parse(diastolicInput);
             String pulseText = pulseInput.getText().toString().trim();
-            int pulse = pulseText.isEmpty() ? 0 : Integer.parseInt(pulseText);
-            if (sys < 60 || sys > 260) { systolicInput.setError(getString(R.string.log_error_systolic)); return; }
-            if (dia < 30 || dia > 150) { diastolicInput.setError(getString(R.string.log_error_diastolic)); return; }
-            if (pulse != 0 && (pulse < 30 || pulse > 220)) { pulseInput.setError(getString(R.string.log_error_pulse)); return; }
-            if (sys <= dia) { diastolicInput.setError(getString(R.string.log_error_order)); return; }
-            BloodPressureReading reading = BloodPressureReading.create(
-                    System.currentTimeMillis(), sys, dia, pulse, "", "manual");
-            new EncryptedReadingStore(this).add(reading);
-            android.view.inputmethod.InputMethodManager keyboard =
-                    (android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            if (keyboard != null) keyboard.hideSoftInputFromWindow(systolicInput.getWindowToken(), 0);
-            Toast.makeText(this, R.string.quick_entry_saved_offline, Toast.LENGTH_SHORT).show();
-            render();
+            pulse = pulseText.isEmpty() ? 0 : Integer.parseInt(pulseText);
         } catch (NumberFormatException e) {
             systolicInput.setError(getString(R.string.log_error_systolic));
+            return;
+        }
+        if (sys < 60 || sys > 260) { systolicInput.setError(getString(R.string.log_error_systolic)); return; }
+        if (dia < 30 || dia > 150) { diastolicInput.setError(getString(R.string.log_error_diastolic)); return; }
+        if (pulse != 0 && (pulse < 30 || pulse > 220)) { pulseInput.setError(getString(R.string.log_error_pulse)); return; }
+        if (sys <= dia) { diastolicInput.setError(getString(R.string.log_error_order)); return; }
+
+        BloodPressureReading reading = BloodPressureReading.create(
+                System.currentTimeMillis(), sys, dia, pulse, "", "manual");
+        try {
+            new EncryptedReadingStore(this).add(reading);
         } catch (Exception e) {
+            android.util.Log.e("AfyaLinkLocalSave", "Could not persist BP reading", e);
             Toast.makeText(this, R.string.local_save_failed, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        android.view.inputmethod.InputMethodManager keyboard =
+                (android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (keyboard != null) keyboard.hideSoftInputFromWindow(systolicInput.getWindowToken(), 0);
+        Toast.makeText(this, R.string.quick_entry_saved_offline, Toast.LENGTH_SHORT).show();
+        try {
+            render();
+        } catch (RuntimeException e) {
+            android.util.Log.e("AfyaLinkLocalSave", "Reading persisted; dashboard refresh failed", e);
         }
     }
 

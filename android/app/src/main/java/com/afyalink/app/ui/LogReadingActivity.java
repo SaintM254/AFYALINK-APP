@@ -265,6 +265,7 @@ public final class LogReadingActivity extends BaseActivity {
         } catch (NumberFormatException e) {
             systolic.setError(getString(R.string.log_error_systolic));
         } catch (Exception e) {
+            android.util.Log.e("AfyaLinkLocalSave", "Could not persist BP reading", e);
             Toast.makeText(this, getString(R.string.local_save_failed), Toast.LENGTH_LONG).show();
         }
     }

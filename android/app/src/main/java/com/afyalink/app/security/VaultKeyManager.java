@@ -15,25 +15,40 @@ import javax.crypto.SecretKey;
 /** Android Keystore-backed at-rest key material; private keys are non-exportable. */
 public final class VaultKeyManager {
     private static final String ANDROID_KEYSTORE = "AndroidKeyStore";
-    private static final String AES_ALIAS = "afyalink.local.aes.v1";
+    private static final String AES_ALIAS_V1 = "afyalink.local.aes.v1";
+    private static final String AES_ALIAS_V2 = "afyalink.local.aes.v2";
     private static final String RSA_ALIAS = "afyalink.demo.rsa.exchange.v1";
 
     private VaultKeyManager() {}
 
+    /** Current key alias: no explicit unlocked-device constraint, improving OEM compatibility. */
     public static SecretKey localEncryptionKey() throws Exception {
+        return getOrCreateAesKey(AES_ALIAS_V2, false);
+    }
+
+    /** Read compatibility for v1 vault files created with the original key policy. */
+    public static SecretKey legacyLocalEncryptionKey() throws Exception {
+        return getOrCreateAesKey(AES_ALIAS_V1, true);
+    }
+
+    private static SecretKey getOrCreateAesKey(String alias, boolean requireUnlocked) throws Exception {
         KeyStore store = KeyStore.getInstance(ANDROID_KEYSTORE);
         store.load(null);
-        if (store.containsAlias(AES_ALIAS)) {
-            return ((KeyStore.SecretKeyEntry) store.getEntry(AES_ALIAS, null)).getSecretKey();
+        if (store.containsAlias(alias)) {
+            KeyStore.Entry entry = store.getEntry(alias, null);
+            if (entry instanceof KeyStore.SecretKeyEntry) {
+                return ((KeyStore.SecretKeyEntry) entry).getSecretKey();
+            }
+            throw new java.security.KeyStoreException("The saved local encryption key is unavailable");
         }
         KeyGenerator generator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, ANDROID_KEYSTORE);
-        KeyGenParameterSpec.Builder builder = new KeyGenParameterSpec.Builder(AES_ALIAS,
+        KeyGenParameterSpec.Builder builder = new KeyGenParameterSpec.Builder(alias,
                 KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
                 .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
                 .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
                 .setKeySize(256)
                 .setRandomizedEncryptionRequired(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if (requireUnlocked && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             builder.setUnlockedDeviceRequired(true);
         }
         generator.init(builder.build());
@@ -66,7 +81,7 @@ public final class VaultKeyManager {
     public static void deleteAll() throws Exception {
         KeyStore store = KeyStore.getInstance(ANDROID_KEYSTORE);
         store.load(null);
-        for (String alias : Arrays.asList(AES_ALIAS, RSA_ALIAS)) {
+        for (String alias : Arrays.asList(AES_ALIAS_V1, AES_ALIAS_V2, RSA_ALIAS)) {
             if (store.containsAlias(alias)) store.deleteEntry(alias);
         }
     }

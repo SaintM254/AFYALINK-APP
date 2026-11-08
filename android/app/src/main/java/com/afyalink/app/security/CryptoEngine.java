@@ -31,7 +31,7 @@ public final class CryptoEngine {
         if (associatedData != null) cipher.updateAAD(associatedData);
         byte[] ciphertext = cipher.doFinal(plaintext);
         byte[] envelope = new byte[1 + iv.length + ciphertext.length];
-        envelope[0] = 1; // envelope format version
+        envelope[0] = 2; // v2 uses the compatibility-friendly Android Keystore alias
         System.arraycopy(iv, 0, envelope, 1, iv.length);
         System.arraycopy(ciphertext, 0, envelope, 1 + iv.length, ciphertext.length);
         Arrays.fill(plaintext, (byte) 0);
@@ -39,14 +39,17 @@ public final class CryptoEngine {
     }
 
     public static byte[] decryptLocal(byte[] envelope, byte[] associatedData) throws Exception {
-        if (envelope == null || envelope.length < 1 + GCM_IV_BYTES + 16 || envelope[0] != 1) {
+        if (envelope == null || envelope.length < 1 + GCM_IV_BYTES + 16
+                || (envelope[0] != 1 && envelope[0] != 2)) {
             throw new SecurityException("Unsupported or truncated encrypted record");
         }
         byte[] iv = Arrays.copyOfRange(envelope, 1, 1 + GCM_IV_BYTES);
         byte[] ciphertext = Arrays.copyOfRange(envelope, 1 + GCM_IV_BYTES, envelope.length);
         Cipher cipher = Cipher.getInstance(AES_TRANSFORM);
-        cipher.init(Cipher.DECRYPT_MODE, VaultKeyManager.localEncryptionKey(),
-                new GCMParameterSpec(GCM_TAG_BITS, iv));
+        javax.crypto.SecretKey key = envelope[0] == 1
+                ? VaultKeyManager.legacyLocalEncryptionKey()
+                : VaultKeyManager.localEncryptionKey();
+        cipher.init(Cipher.DECRYPT_MODE, key, new GCMParameterSpec(GCM_TAG_BITS, iv));
         if (associatedData != null) cipher.updateAAD(associatedData);
         return cipher.doFinal(ciphertext);
     }
