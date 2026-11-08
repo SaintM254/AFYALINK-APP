@@ -22,8 +22,27 @@ public final class CryptoEngine {
 
     private CryptoEngine() {}
 
-    public static byte[] encryptLocal(byte[] plaintext, byte[] associatedData) throws Exception {
-        SecretKey key = VaultKeyManager.localEncryptionKey();
+    public static byte[] encryptLocal(android.content.Context context, byte[] plaintext,
+                                      byte[] associatedData) throws Exception {
+        byte[] primaryPlaintext = plaintext.clone();
+        try {
+            return encryptLocalWithKey(2, primaryPlaintext, associatedData,
+                    VaultKeyManager.localEncryptionKey());
+        } catch (Exception keystoreFailure) {
+            Arrays.fill(primaryPlaintext, (byte) 0);
+            android.util.Log.w("AfyaLinkVault", "Android Keystore AES failed; using the private sandbox fallback", keystoreFailure);
+            try {
+                return encryptLocalWithKey(3, plaintext, associatedData,
+                        VaultKeyManager.softwareFallbackEncryptionKey(context));
+            } catch (Exception fallbackFailure) {
+                fallbackFailure.addSuppressed(keystoreFailure);
+                throw fallbackFailure;
+            }
+        }
+    }
+
+    private static byte[] encryptLocalWithKey(int version, byte[] plaintext,
+                                               byte[] associatedData, SecretKey key) throws Exception {
         byte[] iv = new byte[GCM_IV_BYTES];
         RANDOM.nextBytes(iv);
         Cipher cipher = Cipher.getInstance(AES_TRANSFORM);
@@ -31,24 +50,27 @@ public final class CryptoEngine {
         if (associatedData != null) cipher.updateAAD(associatedData);
         byte[] ciphertext = cipher.doFinal(plaintext);
         byte[] envelope = new byte[1 + iv.length + ciphertext.length];
-        envelope[0] = 2; // v2 uses the compatibility-friendly Android Keystore alias
+        envelope[0] = (byte) version;
         System.arraycopy(iv, 0, envelope, 1, iv.length);
         System.arraycopy(ciphertext, 0, envelope, 1 + iv.length, ciphertext.length);
         Arrays.fill(plaintext, (byte) 0);
+        Arrays.fill(ciphertext, (byte) 0);
         return envelope;
     }
 
-    public static byte[] decryptLocal(byte[] envelope, byte[] associatedData) throws Exception {
+    public static byte[] decryptLocal(android.content.Context context, byte[] envelope,
+                                      byte[] associatedData) throws Exception {
         if (envelope == null || envelope.length < 1 + GCM_IV_BYTES + 16
-                || (envelope[0] != 1 && envelope[0] != 2)) {
+                || (envelope[0] != 1 && envelope[0] != 2 && envelope[0] != 3)) {
             throw new SecurityException("Unsupported or truncated encrypted record");
         }
         byte[] iv = Arrays.copyOfRange(envelope, 1, 1 + GCM_IV_BYTES);
         byte[] ciphertext = Arrays.copyOfRange(envelope, 1 + GCM_IV_BYTES, envelope.length);
         Cipher cipher = Cipher.getInstance(AES_TRANSFORM);
-        javax.crypto.SecretKey key = envelope[0] == 1
+        SecretKey key = envelope[0] == 1
                 ? VaultKeyManager.legacyLocalEncryptionKey()
-                : VaultKeyManager.localEncryptionKey();
+                : envelope[0] == 2 ? VaultKeyManager.localEncryptionKey()
+                : VaultKeyManager.softwareFallbackEncryptionKey(context);
         cipher.init(Cipher.DECRYPT_MODE, key, new GCMParameterSpec(GCM_TAG_BITS, iv));
         if (associatedData != null) cipher.updateAAD(associatedData);
         return cipher.doFinal(ciphertext);

@@ -1,5 +1,6 @@
 package com.afyalink.app.security;
 
+import android.content.Context;
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
@@ -29,6 +30,51 @@ public final class VaultKeyManager {
     /** Read compatibility for v1 vault files created with the original key policy. */
     public static SecretKey legacyLocalEncryptionKey() throws Exception {
         return getOrCreateAesKey(AES_ALIAS_V1, true);
+    }
+
+    /**
+     * Last-resort, app-sandbox AES key for devices whose Android Keystore AES
+     * provider cannot encrypt the vault. The raw key remains in no-backup,
+     * app-private storage; the reading payload itself is still AES-GCM sealed.
+     */
+    public static synchronized SecretKey softwareFallbackEncryptionKey(Context context) throws Exception {
+        java.io.File dir = new java.io.File(context.getNoBackupFilesDir(), "vault");
+        if (!dir.exists() && !dir.mkdirs()) throw new java.io.IOException("Cannot create private vault directory");
+        android.util.AtomicFile keyFile = new android.util.AtomicFile(new java.io.File(dir, "fallback-key.bin"));
+        byte[] raw;
+        if (keyFile.getBaseFile().exists()) {
+            try (java.io.FileInputStream in = keyFile.openRead();
+                 java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream()) {
+                byte[] buffer = new byte[128];
+                int n;
+                while ((n = in.read(buffer)) != -1) out.write(buffer, 0, n);
+                raw = out.toByteArray();
+            }
+            if (raw.length != 32) {
+                Arrays.fill(raw, (byte) 0);
+                throw new java.security.GeneralSecurityException("Fallback vault key is invalid");
+            }
+        } else {
+            raw = new byte[32];
+            new java.security.SecureRandom().nextBytes(raw);
+            java.io.FileOutputStream out = null;
+            try {
+                out = keyFile.startWrite();
+                out.write(raw);
+                out.flush();
+                out.getFD().sync();
+                keyFile.finishWrite(out);
+            } catch (Exception e) {
+                if (out != null) keyFile.failWrite(out);
+                Arrays.fill(raw, (byte) 0);
+                throw e;
+            }
+        }
+        try {
+            return new javax.crypto.spec.SecretKeySpec(raw, "AES");
+        } finally {
+            Arrays.fill(raw, (byte) 0);
+        }
     }
 
     private static SecretKey getOrCreateAesKey(String alias, boolean requireUnlocked) throws Exception {

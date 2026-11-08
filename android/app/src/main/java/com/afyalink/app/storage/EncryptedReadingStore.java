@@ -25,10 +25,12 @@ import java.util.List;
  */
 public final class EncryptedReadingStore {
     private static final byte[] AAD = "com.afyalink.app.readings.v1".getBytes(StandardCharsets.UTF_8);
+    private final Context context;
     private final AtomicFile file;
 
     public EncryptedReadingStore(Context context) {
-        File dir = new File(context.getNoBackupFilesDir(), "vault");
+        this.context = context.getApplicationContext();
+        File dir = new File(this.context.getNoBackupFilesDir(), "vault");
         if (!dir.exists() && !dir.mkdirs()) throw new IllegalStateException("Cannot create private vault directory");
         file = new AtomicFile(new File(dir, "readings.bin"));
     }
@@ -42,7 +44,7 @@ public final class EncryptedReadingStore {
             while ((n = in.read(buffer)) != -1) out.write(buffer, 0, n);
             encrypted = out.toByteArray();
         }
-        byte[] plaintext = CryptoEngine.decryptLocal(encrypted, AAD);
+        byte[] plaintext = CryptoEngine.decryptLocal(context, encrypted, AAD);
         try {
             JSONArray array = new JSONArray(new String(plaintext, StandardCharsets.UTF_8));
             List<BloodPressureReading> rows = new ArrayList<>();
@@ -102,6 +104,7 @@ public final class EncryptedReadingStore {
 
     public synchronized void clear() throws Exception {
         file.delete();
+        new AtomicFile(new File(file.getBaseFile().getParentFile(), "fallback-key.bin")).delete();
     }
 
     private void write(List<BloodPressureReading> rows) throws Exception {
@@ -119,7 +122,7 @@ public final class EncryptedReadingStore {
             array.put(o);
         }
         byte[] plaintext = array.toString().getBytes(StandardCharsets.UTF_8);
-        byte[] encrypted = CryptoEngine.encryptLocal(plaintext, AAD);
+        byte[] encrypted = CryptoEngine.encryptLocal(context, plaintext, AAD);
         FileOutputStream out = null;
         try {
             out = file.startWrite();

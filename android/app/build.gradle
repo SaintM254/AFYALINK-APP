@@ -4,8 +4,8 @@ plugins {
 
 // Single source of truth for the app identity. CI overrides with
 // -Pafyalink.versionName=<x.y.z> -Pafyalink.versionCode=<n>
-def afyalinkVersionName = (project.findProperty('afyalink.versionName') ?: '1.1.1').toString()
-def afyalinkVersionCode = (project.findProperty('afyalink.versionCode') ?: '3').toString().toInteger()
+def afyalinkVersionName = (project.findProperty('afyalink.versionName') ?: '1.1.2').toString()
+def afyalinkVersionCode = (project.findProperty('afyalink.versionCode') ?: '4').toString().toInteger()
 
 // Signing material: signing/keystore.properties (committed demo key) or the
 // same keys injected as environment variables by CI secrets.
@@ -66,7 +66,7 @@ android {
             versionNameSuffix '-debug'
         }
         release {
-            // Kept off for v1.1.1 so that resource-name reflection in custom
+            // Kept off for v1.1.2 so that resource-name reflection in custom
             // views can never be stripped. See docs/RELEASE-PROCESS.md.
             minifyEnabled false
             shrinkResources false

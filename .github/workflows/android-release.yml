@@ -101,7 +101,7 @@ jobs:
           ## Afyalink v${VERSION}
 
           - Offline-first blood-pressure tracking; measurements are encrypted and saved on the device.
-          - Compatible local vault encryption, retaining v1 data while new saves use a refreshed Android Keystore key.
+          - Compatible local vault encryption with an AES-GCM sandbox fallback for devices whose Android Keystore AES provider fails.
           - Dashboard-first manual entry with automatic MAP calculation using (SBP + 2 × DBP) ÷ 3.
           - Clear navigation, editable greeting name, and direct Light / Dark / System appearance controls.
           - Readings section explains SBP, DBP, MAP and educational blood-pressure categories.
