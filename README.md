@@ -29,13 +29,13 @@ The signed APK is written to `android/app/build/outputs/apk/release/app-release.
 
 ## GitHub Release
 
-The repository workflow is `.github/workflows/android-release.yml`. GitHub Actions is currently not enabled for this repository, so the initial release cannot be run by the agent. A repository administrator must:
+The repository workflow is `.github/workflows/android-release.yml`. It builds automatically when the working branch is pushed and also reacts to `v*` tags. GitHub only lists a **Run workflow** control when a `workflow_dispatch` workflow exists on the repository's default branch; this workflow intentionally stays on the development branch so the app branch is not merged. Use the branch build artifact and GitHub's release page instead:
 
-1. Open [Repository Actions settings](https://github.com/SaintM254/AFYALINK-APP/settings/actions), allow GitHub Actions (the workflow uses GitHub-published actions), and save the setting.
-2. Open [the Actions page](https://github.com/SaintM254/AFYALINK-APP/actions), choose **Android release**, click **Run workflow**, keep `arena/9067e9fc-afyalink-app` selected, leave **Create or update GitHub Release** checked, and run it.
-3. Review the build, then download the APK and `SHA256SUMS.txt` from [GitHub Releases](https://github.com/SaintM254/AFYALINK-APP/releases).
+1. If Actions are disabled, open [Repository Actions settings](https://github.com/SaintM254/AFYALINK-APP/settings/actions), allow GitHub Actions, and save.
+2. A push to `arena/9067e9fc-afyalink-app` starts **Android release** automatically. Open [the Actions page](https://github.com/SaintM254/AFYALINK-APP/actions), wait for that run, and download `app-release.apk` and `SHA256SUMS.txt` from its **Artifacts** section.
+3. Open [New release targeting the working branch](https://github.com/SaintM254/AFYALINK-APP/releases/new?target=arena%2F9067e9fc-afyalink-app). Enter tag `v1.0.0`, choose the working branch as the tag target if GitHub asks, set the title to **Afyalink v1.0.0**, attach the downloaded APK and checksum, and publish.
 
-The workflow creates **Afyalink v1.0.0** (`v1.0.0`) and attaches the signed APK and checksum. It also keeps an Actions artifact for 30 days. The branch remains unmerged; releases are built from the selected branch and are independent of merging to `main`.
+The tag build also attempts to attach its APK and checksum automatically. The branch remains unmerged; this release process does not require merging app code into `main`.
 
 Full release and signing steps: [`docs/RELEASE-PROCESS.md`](docs/RELEASE-PROCESS.md).
 

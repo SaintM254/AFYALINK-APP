@@ -9,6 +9,8 @@ on:
         type: boolean
         default: true
   push:
+    branches:
+      - 'arena/9067e9fc-afyalink-app'
     tags:
       - 'v*'
 
@@ -75,7 +77,7 @@ jobs:
           retention-days: 30
 
       - name: Create or update GitHub Release
-        if: github.event_name == 'push' || inputs.publish_release
+        if: github.ref_type == 'tag' || (github.event_name == 'workflow_dispatch' && inputs.publish_release)
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: v${{ steps.version.outputs.name }}

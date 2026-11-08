@@ -4,20 +4,18 @@
 
 The intended first release is **Afyalink v1.0.0**, tag `v1.0.0`. The workflow builds `assembleRelease`, runs the release unit tests, calculates SHA-256, uploads an Actions artifact, and creates or updates a GitHub Release with the APK and checksum attached.
 
-## One-time human setup
+## Why the workflow may not appear in GitHub's workflow list
 
-GitHub Actions is not currently enabled for this repository. The agent's GitHub connection cannot change the repository-level Actions permission, so an administrator must enable it:
+GitHub only exposes the **Run workflow** button for `workflow_dispatch` workflows whose YAML exists on the repository's default branch. This release workflow intentionally lives on `arena/9067e9fc-afyalink-app`, not `main`, to honor the no-merge requirement. Therefore the empty **Get started with GitHub Actions** screen is expected before a branch push run; it does not mean the source branch is missing.
 
-1. Open <https://github.com/SaintM254/AFYALINK-APP/settings/actions>.
-2. Under **Actions permissions**, select **Allow all actions and reusable workflows**, or a policy that permits GitHub's `actions/checkout`, `actions/setup-java`, and `actions/upload-artifact` actions.
-3. Click **Save** if GitHub shows a save button.
-4. Open <https://github.com/SaintM254/AFYALINK-APP/actions>.
-5. In the workflow list select **Android release**, choose **Run workflow**, select branch `arena/9067e9fc-afyalink-app`, keep **Create or update GitHub Release** enabled, then confirm **Run workflow**.
-6. Wait for the run to finish. Check both the workflow's **Artifacts** section and <https://github.com/SaintM254/AFYALINK-APP/releases> for `Afyalink v1.0.0`.
+## Build and publish without merging
 
-No assumption that this setup is already done: if the Actions permission or workflow controls do not appear, the repository administrator must resolve that GitHub setting before a release can run.
+1. If GitHub Actions are disabled for this repository, an administrator must open <https://github.com/SaintM254/AFYALINK-APP/settings/actions>, allow GitHub Actions (or allow the GitHub-published `actions/checkout`, `actions/setup-java`, and `actions/upload-artifact` actions), and save.
+2. A push to `arena/9067e9fc-afyalink-app` automatically starts the **Android release** build. Open <https://github.com/SaintM254/AFYALINK-APP/actions>, open the latest run, and wait for it to complete. Download `app-release.apk` and `SHA256SUMS.txt` from the run's **Artifacts** section.
+3. Open <https://github.com/SaintM254/AFYALINK-APP/releases/new?target=arena%2F9067e9fc-afyalink-app>. Enter tag `v1.0.0`, choose the working branch as the target if asked, set the title to **Afyalink v1.0.0**, attach both downloaded files, and publish the release.
+4. The workflow also listens for `v*` tags and attempts to upload the build APK and checksum to the matching release. If the release page already shows both assets, no duplicate manual upload is needed; otherwise attach the run artifact from step 2.
 
-The workflow can also run on a pushed `v*` tag. A manual run from a branch builds version 1.0.0 and targets that run's commit when creating the tag.
+This does not merge the application branch into `main`. If the Actions permission is off, the run will not start until an administrator changes that setting. The workflow does not offer a manual **Run workflow** button while it remains branch-only.
 
 ## What the workflow signs
 
