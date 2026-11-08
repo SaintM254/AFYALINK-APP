@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- =====================================================================
+         App theme — Material 3 DayNight, but every colour is driven by the
+         AfyaLink palette so nothing looks "stock Android".
+         ===================================================================== -->
+    <style name="Theme.AfyaLink" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/brand_teal</item>
+        <item name="colorOnPrimary">@color/brand_white</item>
+        <item name="colorPrimaryContainer">@color/brand_teal_soft</item>
+        <item name="colorOnPrimaryContainer">@color/brand_teal</item>
+        <item name="colorSecondary">@color/brand_teal</item>
+        <item name="colorOnSecondary">@color/brand_white</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorSurfaceVariant">@color/surface_alt</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
+        <item name="colorOutline">@color/hairline</item>
+        <item name="colorOutlineVariant">@color/hairline</item>
+        <item name="colorError">@color/danger</item>
+        <item name="android:colorBackground">@color/canvas</item>
+        <item name="android:windowBackground">@color/canvas</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_tertiary</item>
+
+        <!-- Edge to edge; every screen pads itself with window insets -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">@bool/light_system_bars</item>
+        <item name="android:windowLightNavigationBar">@bool/light_system_bars</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+
+        <!-- Splash (ignored below API 31) -->
+        <item name="android:windowSplashScreenBackground">@color/canvas</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@android:color/transparent</item>
+
+        <item name="android:windowAnimationStyle">@style/Animation.AfyaLink.Activity</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="Theme.AfyaLink.Fullscreen.Transparent" parent="Theme.AfyaLink">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Animation.AfyaLink.Activity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/hold</item>
+        <item name="android:activityCloseEnterAnimation">@anim/hold</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_fade_out</item>
+    </style>
+</resources>

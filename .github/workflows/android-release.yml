@@ -1,0 +1,106 @@
+name: Android release
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_release:
+        description: Create or update the Afyalink v1.0.0 GitHub Release after building
+        required: true
+        type: boolean
+        default: true
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build signed Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Select version
+        id: version
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="1.0.0"
+          fi
+          echo "name=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build release APK
+        working-directory: android
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon --stacktrace \
+            -Pafyalink.versionName='${{ steps.version.outputs.name }}' \
+            -Pafyalink.versionCode='${{ github.run_number }}' \
+            testReleaseUnitTest assembleRelease
+
+      - name: Calculate SHA-256
+        id: checksum
+        shell: bash
+        run: |
+          APK="android/app/build/outputs/apk/release/app-release.apk"
+          test -s "$APK"
+          SHA="$(sha256sum "$APK" | cut -d ' ' -f 1)"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "$SHA  app-release.apk" > android/app/build/outputs/apk/release/SHA256SUMS.txt
+
+      - name: Upload APK build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Afyalink-v${{ steps.version.outputs.name }}-APK
+          path: |
+            android/app/build/outputs/apk/release/app-release.apk
+            android/app/build/outputs/apk/release/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Create or update GitHub Release
+        if: github.event_name == 'push' || inputs.publish_release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v${{ steps.version.outputs.name }}
+          VERSION: ${{ steps.version.outputs.name }}
+          CHECKSUM: ${{ steps.checksum.outputs.sha }}
+          TARGET: ${{ github.sha }}
+        shell: bash
+        run: |
+          NOTES="$(mktemp)"
+          cat > "$NOTES" <<NOTES_EOF
+          ## Afyalink v${VERSION}
+
+          - Offline-first hypertension tracking; measurements stay encrypted on the device.
+          - Bluetooth SIG Blood Pressure Service (0x1810) monitor support plus manual entry.
+          - Demo relay only: the encrypted exchange is verified locally and no readings are uploaded.
+          - This build uses the repository's public demo signing key. Do not use it for Play Store distribution or sensitive production deployment.
+
+          **SHA-256:** \`${CHECKSUM}\`
+
+          See [the release process](https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_SHA}/docs/RELEASE-PROCESS.md) and [privacy/compliance notes](https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_SHA}/docs/PRIVACY-COMPLIANCE.md).
+          NOTES_EOF
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --title "Afyalink v${VERSION}" --notes-file "$NOTES"
+            gh release upload "$TAG" android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/SHA256SUMS.txt --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/SHA256SUMS.txt \
+              --repo "$GITHUB_REPOSITORY" --target "$TARGET" --title "Afyalink v${VERSION}" --notes-file "$NOTES"
+          fi

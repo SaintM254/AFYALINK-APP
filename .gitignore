@@ -1,0 +1,22 @@
+# Android / Gradle build output
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/captures/
+*.iml
+*.hprof
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Tooling
+.venv/
+__pycache__/
+node_modules/
+.DS_Store
+
+# Local release staging
+release-out/

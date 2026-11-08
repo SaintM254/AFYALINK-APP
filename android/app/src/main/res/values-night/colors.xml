@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark palette keeps the same semantic names so every screen adapts. -->
+    <color name="brand_teal">#FF2C8CAE</color>
+    <!-- Menu remains the exact logo colour in either appearance. -->
+    <color name="brand_teal_logo">#FF095D7E</color>
+    <color name="menu_button_surface">#FFF6F4EF</color>
+    <color name="brand_teal_deep">#FF1E6E8C</color>
+    <color name="brand_teal_soft">#FF12292F</color>
+    <color name="brand_ink">#FFF2F4F1</color>
+
+    <color name="canvas">#FF0D1315</color>
+    <color name="surface">#FF161E20</color>
+    <color name="surface_alt">#FF121A1C</color>
+    <color name="surface_sunken">#FF0A1012</color>
+    <color name="hairline">#FF273134</color>
+    <color name="scrim">#99000000</color>
+    <color name="ripple_ink">#33F2F4F1</color>
+
+    <color name="text_primary">#FFF2F4F1</color>
+    <color name="text_secondary">#FFA7B2B1</color>
+    <color name="text_tertiary">#FF78827F</color>
+
+    <color name="stage_normal">#FF9FC29A</color>
+    <color name="stage_normal_soft">#FF1D2A22</color>
+    <color name="stage_normal_ink">#FFB6D4AE</color>
+
+    <color name="stage_elevated">#FFE3C689</color>
+    <color name="stage_elevated_soft">#FF2B2517</color>
+    <color name="stage_elevated_ink">#FFF0D79C</color>
+
+    <color name="stage_grade1">#FFE0A855</color>
+    <color name="stage_grade1_soft">#FF2E2314</color>
+    <color name="stage_grade1_ink">#FFF2C283</color>
+
+    <color name="stage_grade2">#FFD67F3C</color>
+    <color name="stage_grade2_soft">#FF301E12</color>
+    <color name="stage_grade2_ink">#FFF0A264</color>
+
+    <color name="stage_grade3">#FFE05B51</color>
+    <color name="stage_grade3_soft">#FF331513</color>
+    <color name="stage_grade3_ink">#FFFF8A80</color>
+
+    <color name="stage_low">#FF97B0BE</color>
+    <color name="stage_low_soft">#FF17242A</color>
+    <color name="stage_low_ink">#FFB4CBD8</color>
+
+    <color name="stage_neutral">#FF3A4446</color>
+    <color name="stage_neutral_soft">#FF1A2224</color>
+    <color name="stage_neutral_ink">#FFB3BEBD</color>
+
+    <color name="success">#FF8FC9A6</color>
+    <color name="warning">#FFE0B05F</color>
+    <color name="danger">#FFE05B51</color>
+</resources>

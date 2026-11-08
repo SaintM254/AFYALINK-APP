@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Minimalist 24dp stroke icon. Tint at the ImageView; geometry stays monochrome. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#FF14181A"
+        android:strokeWidth="1.7"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M6.6,10.6h10.8a1.4,1.4 0 0,1 1.4,1.4v7.4a1.4,1.4 0 0,1 -1.4,1.4H6.6a1.4,1.4 0 0,1 -1.4,-1.4V12a1.4,1.4 0 0,1 1.4,-1.4z" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#FF14181A"
+        android:strokeWidth="1.7"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M8.6,10.6V8.2a3.4,3.4 0 0,1 6.8,0v2.4" />
+</vector>

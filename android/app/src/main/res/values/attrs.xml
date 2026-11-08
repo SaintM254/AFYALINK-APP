@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FluidCard">
+        <attr name="afya_radius" format="dimension" />
+        <attr name="afya_tint" format="color" />
+        <attr name="afya_border" format="boolean" />
+        <attr name="afya_pressable" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="StageScaleView">
+        <attr name="afya_showLabels" format="boolean" />
+        <attr name="afya_markerValue" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="TrendChartView">
+        <attr name="afya_chartDays" format="integer" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- =====================================================================
+         Brand
+         ===================================================================== -->
+    <string name="app_name" translatable="false">AfyaLink</string>
+    <string name="wordmark" translatable="false">AFYALINK</string>
+    <string name="tagline" translatable="false">HEALTH, CLOSER TO YOU</string>
+
+    <!-- =====================================================================
+         Content descriptions (icon-only controls carry no visible label, so
+         every one of them ships a spoken description instead)
+         ===================================================================== -->
+    <string name="cd_menu">Open menu</string>
+    <string name="cd_close">Close</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_add_reading">Log a reading</string>
+    <string name="cd_increment">Increase</string>
+    <string name="cd_decrement">Decrease</string>
+    <string name="cd_settings">Settings</string>
+    <string name="cd_sync">Sync reading queue</string>
+    <string name="cd_delete">Delete</string>
+    <string name="cd_edit">Edit</string>
+    <string name="cd_history">Readings history</string>
+    <string name="cd_trends">Trends</string>
+    <string name="cd_reminders">Reminders</string>
+    <string name="cd_security">Security</string>
+    <string name="cd_about">About</string>
+    <string name="cd_filter">Filter</string>
+    <string name="cd_theme">Appearance</string>
+    <string name="cd_calendar">Choose date</string>
+    <string name="cd_clock">Choose time</string>
+    <string name="cd_lock">Lock</string>
+    <string name="cd_export">Export</string>
+    <string name="cd_chevron">Open</string>
+    <string name="cd_logo">AfyaLink logo</string>
+
+    <!-- =====================================================================
+         Full-screen menu
+         ===================================================================== -->
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_readings">Readings</string>
+    <string name="menu_monitor">Monitor</string>
+    <string name="menu_trends">Trends</string>
+    <string name="menu_reminders">Reminders</string>
+    <string name="menu_sync">Sync</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_about">About us</string>
+    <string name="menu_primary_action">Log a reading</string>
+    <string name="menu_close">Close menu</string>
+
+    <!-- =====================================================================
+         Dashboard
+         ===================================================================== -->
+    <string name="dash_greeting_morning">Good morning</string>
+    <string name="dash_greeting_afternoon">Good afternoon</string>
+    <string name="dash_greeting_evening">Good evening</string>
+    <string name="dash_greeting_plain">Hello</string>
+    <string name="dash_latest">Latest reading</string>
+    <string name="dash_empty_title">No readings yet</string>
+    <string name="dash_empty_body">Log your first blood-pressure reading. Everything is encrypted on this device before it is written to disk.</string>
+    <string name="dash_average">7-day average</string>
+    <string name="dash_count">Readings logged</string>
+    <string name="dash_recent">Recent readings</string>
+    <string name="dash_scale_title">WHO grading scale</string>
+    <string name="dash_scale_body">Systolic over diastolic, in mmHg. Grades follow the WHO / ISH classification used by home-monitoring guidance.</string>
+    <string name="dash_crisis">This reading is in the crisis range. Rest for five minutes and measure again. If the repeat is 180 systolic or 120 diastolic or higher, seek urgent clinical advice.</string>
+    <string name="dash_low_warning">This reading is low. Drink water, sit down and re-measure. Speak to a clinician if you feel dizzy or faint.</string>
+    <string name="dash_streak">%1$d-day logging streak</string>
+    <string name="dash_last_sync">Last sync %1$s</string>
+    <string name="dash_never_synced">Encrypted queue only — nothing has left this device yet</string>
+    <string name="dash_see_all">See all</string>
+    <string name="dash_quick_log">Log</string>
+
+    <!-- =====================================================================
+         Log / edit a reading
+         ===================================================================== -->
+    <string name="log_new_eyebrow">NEW READING</string>
+    <string name="log_detail_eyebrow">READING DETAIL</string>
+    <string name="log_new_title">Log a reading</string>
+    <string name="log_detail_title">Reading</string>
+    <string name="log_systolic">Systolic</string>
+    <string name="log_systolic_hint">Top number</string>
+    <string name="log_diastolic">Diastolic</string>
+    <string name="log_diastolic_hint">Bottom number</string>
+    <string name="log_pulse">Pulse</string>
+    <string name="log_pulse_hint">Optional</string>
+    <string name="log_measured_at">Measured at</string>
+    <string name="log_arm">Arm</string>
+    <string name="log_arm_left">Left</string>
+    <string name="log_arm_right">Right</string>
+    <string name="log_position">Position</string>
+    <string name="log_position_sitting">Sitting</string>
+    <string name="log_position_standing">Standing</string>
+    <string name="log_position_lying">Lying</string>
+    <string name="log_notes">Notes</string>
+    <string name="log_notes_hint">Anything worth remembering</string>
+    <string name="log_save">Save reading</string>
+    <string name="log_saved">Reading saved and encrypted</string>
+    <string name="log_updated">Reading updated</string>
+    <string name="log_deleted">Reading deleted</string>
+    <string name="log_delete_title">Delete this reading?</string>
+    <string name="log_delete_body">The encrypted copy is removed from this device permanently.</string>
+    <string name="log_stage_preview">Falls in</string>
+    <string name="log_error_systolic">Enter a systolic value between 60 and 260</string>
+    <string name="log_error_diastolic">Enter a diastolic value between 30 and 150</string>
+    <string name="log_error_pulse">Leave pulse empty or enter 30 to 220</string>
+    <string name="log_error_order">Systolic must be higher than diastolic</string>
+    <string name="log_encrypted_note">Saved with AES-256-GCM using a key held in the Android Keystore.</string>
+
+    <!-- =====================================================================
+         History
+         ===================================================================== -->
+    <string name="history_eyebrow">EVERY READING</string>
+    <string name="history_title">Readings</string>
+    <string name="history_empty">No readings match this filter yet.</string>
+    <string name="history_filter_all">All</string>
+    <string name="history_filter_high">High</string>
+    <string name="history_filter_normal">In range</string>
+    <string name="history_count">%1$d readings</string>
+    <string name="history_filter_sheet_title">Filter readings</string>
+
+    <!-- =====================================================================
+         Trends
+         ===================================================================== -->
+    <string name="trends_eyebrow">PATTERNS</string>
+    <string name="trends_title">Trends</string>
+    <string name="trends_range_7">7D</string>
+    <string name="trends_range_30">30D</string>
+    <string name="trends_range_90">90D</string>
+    <string name="trends_average">Average</string>
+    <string name="trends_variability">Variability</string>
+    <string name="trends_morning">Morning</string>
+    <string name="trends_evening">Evening</string>
+    <string name="trends_highest">Highest</string>
+    <string name="trends_lowest">Lowest</string>
+    <string name="trends_empty">Log a few more readings to unlock patterns.</string>
+    <string name="trends_distribution">Stage distribution</string>
+    <string name="trends_in_range">In range</string>
+    <string name="trends_chart_caption">Systolic and diastolic readings over the selected window.</string>
+    <string name="trends_systolic">Systolic</string>
+    <string name="trends_diastolic">Diastolic</string>
+
+    <!-- =====================================================================
+         Reminders
+         ===================================================================== -->
+    <string name="reminders_eyebrow">ROUTINE</string>
+    <string name="reminders_title">Reminders</string>
+    <string name="reminders_empty">No reminders yet. Two measurements a day, morning and evening, give the clearest picture.</string>
+    <string name="reminders_add">Add reminder</string>
+    <string name="reminders_new_title">New reminder</string>
+    <string name="reminders_type_measure">Measurement</string>
+    <string name="reminders_type_medication">Medication</string>
+    <string name="reminders_delete_title">Delete reminder?</string>
+    <string name="reminders_saved">Reminder saved</string>
+    <string name="reminders_deleted">Reminder deleted</string>
+    <string name="reminders_off">Off</string>
+    <string name="reminders_channel_name">AfyaLink reminders</string>
+    <string name="reminders_channel_desc">Measurement and medication reminders</string>
+    <string name="reminders_notif_title">Time to measure</string>
+    <string name="reminders_notif_body">Take a five-minute rest, then log your blood pressure.</string>
+    <string name="reminders_notif_med_title">Medication reminder</string>
+    <string name="reminders_notif_med_body">Time for your medication.</string>
+    <string name="reminders_permission">Allow notifications so reminders can reach you.</string>
+
+    <!-- =====================================================================
+         Sync & data
+         ===================================================================== -->
+    <string name="sync_eyebrow">VAULT</string>
+    <string name="sync_title">Sync &amp; data</string>
+    <string name="sync_mode">Sync mode</string>
+    <string name="sync_mode_offline">Offline</string>
+    <string name="sync_mode_demo">Demo relay</string>
+    <string name="sync_mode_https">HTTPS relay</string>
+    <string name="sync_mode_offline_body">Readings stay in the encrypted queue on this device. Nothing is transmitted.</string>
+    <string name="sync_mode_demo_body">Runs the real RSA-3072 handshake and AES-256-GCM transmission against an on-device relay, so no health data leaves the phone. Ideal for demos.</string>
+    <string name="sync_mode_https_body">Requires an HTTPS endpoint you control, plus the compliance work described below. Disabled until a URL is saved.</string>
+    <string name="sync_endpoint">Endpoint</string>
+    <string name="sync_endpoint_hint">https://your-relay.example/afya</string>
+    <string name="sync_endpoint_saved">Endpoint saved</string>
+    <string name="sync_endpoint_insecure">Only https:// endpoints are accepted</string>
+    <string name="sync_endpoint_locked">Saving a custom endpoint stays disabled in this build. See docs/PRIVACY-COMPLIANCE.md.</string>
+    <string name="sync_queued">%1$d readings queued</string>
+    <string name="sync_queued_none">Queue is empty</string>
+    <string name="sync_last">Last sync %1$s</string>
+    <string name="sync_never">Never synced</string>
+    <string name="sync_now">Sync now</string>
+    <string name="sync_running">Handshaking and transmitting…</string>
+    <string name="sync_done">%1$d readings verified by the local demo relay. No data left this device.</string>
+    <string name="sync_nothing">Everything is already transmitted</string>
+    <string name="sync_failed">Sync failed. Readings stay safely queued.</string>
+    <string name="sync_compliance_title">Why the relay is local</string>
+    <string name="sync_compliance_body">Blood pressure is health data. Under HIPAA a covered entity needs a signed business associate agreement with every processor that touches it, plus audit controls, access logging, breach notification and a documented risk analysis; GDPR and Kenya Data Protection Act 2019 add lawful-basis, residency and data-subject-rights duties. This build therefore ships no cloud endpoint: it proves the encrypted pipeline end to end on the device and leaves the compliant backend to your own infrastructure. Read docs/PRIVACY-COMPLIANCE.md before enabling HTTPS.</string>
+    <string name="sync_export_title">Take your data with you</string>
+    <string name="sync_export_encrypted">Encrypted archive</string>
+    <string name="sync_export_encrypted_body">Single .afya file, AES-256-GCM with a passphrase you choose.</string>
+    <string name="sync_export_csv">Plain CSV</string>
+    <string name="sync_export_csv_body">Readable by any spreadsheet. Unencrypted — share only with your clinician.</string>
+    <string name="sync_export_passphrase_title">Protect the archive</string>
+    <string name="sync_export_passphrase_body">Choose a passphrase of at least 8 characters. Without it the archive cannot be opened.</string>
+    <string name="sync_export_passphrase_short">Use at least 8 characters</string>
+    <string name="sync_export_done">Archive ready</string>
+    <string name="sync_export_csv_done">CSV ready</string>
+    <string name="sync_export_failed">Export failed</string>
+    <string name="sync_no_app">No app available to receive the file</string>
+    <string name="sync_security_details">Security details</string>
+    <string name="sync_transmitted_count">Transmitted</string>
+    <string name="sync_device_fingerprint">Device key</string>
+    <string name="sync_session_info">Each sync derives a fresh AES-256 session key and wraps it with the relay public key using RSA-3072 OAEP, the classic hybrid handshake.</string>
+
+    <!-- =====================================================================
+         Settings
+         ===================================================================== -->
+    <string name="settings_eyebrow">PREFERENCES</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_profile">Profile</string>
+    <string name="settings_name">Name</string>
+    <string name="settings_name_hint">Used only in the greeting</string>
+    <string name="settings_birth_year">Year of birth</string>
+    <string name="settings_birth_year_hint">Optional, improves context</string>
+    <string name="settings_cuff">Cuff model</string>
+    <string name="settings_cuff_hint">e.g. Omron M3</string>
+    <string name="settings_units">Units</string>
+    <string name="settings_units_mmhg">mmHg</string>
+    <string name="settings_units_kpa">kPa</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_target">Home target</string>
+    <string name="settings_target_standard">Standard</string>
+    <string name="settings_target_strict">Strict</string>
+    <string name="settings_target_standard_body">Under 135 / 85 mmHg for home readings</string>
+    <string name="settings_target_strict_body">Under 130 / 80 mmHg, for higher cardiovascular risk</string>
+    <string name="settings_security">Security</string>
+    <string name="settings_security_body">Encryption, app lock, vault rotation</string>
+    <string name="settings_data">Sync &amp; data</string>
+    <string name="settings_data_body">Queue, relay, export</string>
+    <string name="settings_about">About AfyaLink</string>
+    <string name="settings_about_body">Version, references, disclaimer</string>
+    <string name="settings_saved">Settings saved</string>
+    <string name="settings_storage">Stored encrypted</string>
+
+    <!-- =====================================================================
+         Security
+         ===================================================================== -->
+    <string name="security_eyebrow">ENCRYPTION</string>
+    <string name="security_title">Security</string>
+    <string name="security_vault_key">Vault cipher</string>
+    <string name="security_aes">AES-256-GCM</string>
+    <string name="security_transport">Key exchange</string>
+    <string name="security_rsa">RSA-3072 OAEP SHA-256</string>
+    <string name="security_hardware">Key storage</string>
+    <string name="security_hardware_yes">Hardware-backed Keystore</string>
+    <string name="security_hardware_software">Keystore (software)</string>
+    <string name="security_fingerprint">Device key fingerprint</string>
+    <string name="security_app_lock">App lock</string>
+    <string name="security_app_lock_body">Require device biometrics or PIN before readings are shown.</string>
+    <string name="security_lock_now">Lock now</string>
+    <string name="security_rotate">Re-encrypt vault</string>
+    <string name="security_rotate_body">Generates a fresh AES-256 key and rewrites every record.</string>
+    <string name="security_rotate_done">Vault re-encrypted</string>
+    <string name="security_rotate_failed">Could not re-encrypt the vault. Original data is untouched.</string>
+    <string name="security_wipe">Erase all data</string>
+    <string name="security_wipe_body">Deletes every reading, reminder and key from this device.</string>
+    <string name="security_wipe_title">Erase everything?</string>
+    <string name="security_wipe_confirm">Erase everything</string>
+    <string name="security_wiped">All local data erased</string>
+    <string name="security_unlock_title">AfyaLink is locked</string>
+    <string name="security_unlock_body">Unlock to view your readings.</string>
+    <string name="security_unlock_action">Unlock</string>
+    <string name="security_auth_title">Unlock AfyaLink</string>
+    <string name="security_auth_subtitle">Confirm it is you to open your readings</string>
+    <string name="security_auth_failed">Not recognised. Try again.</string>
+    <string name="security_no_auth">Set a screen lock on this device to use app lock.</string>
+    <string name="security_records">%1$d encrypted records on disk</string>
+
+    <!-- =====================================================================
+         About
+         ===================================================================== -->
+    <string name="about_eyebrow">ABOUT</string>
+    <string name="about_title">AfyaLink</string>
+    <string name="about_version">Version %1$s · build %2$d</string>
+    <string name="about_mission">Offline-first blood pressure tracking that pairs with a consumer cuff and keeps every reading encrypted on the phone until you decide otherwise.</string>
+    <string name="about_disclaimer_title">Not a medical device</string>
+    <string name="about_disclaimer_body">AfyaLink records what your monitor shows and grades it against published WHO / ISH bands. It does not diagnose, treat or replace a clinician. In an emergency call your local emergency number.</string>
+    <string name="about_privacy_title">Your data stays yours</string>
+    <string name="about_privacy_body">Readings are encrypted with AES-256-GCM before they touch the filesystem. The keys live in the Android Keystore and never leave the device. Sync is a local demo relay by default.</string>
+    <string name="about_source_title">Source and licence</string>
+    <string name="about_source_body">AfyaLink v1.0.0 is released as a signed APK from GitHub Releases. The project is public — issues and pull requests are welcome.</string>
+    <string name="about_open_repo">Open the repository</string>
+    <string name="about_references_title">Clinical references</string>
+    <string name="about_references_body">WHO / International Society of Hypertension blood pressure classification. 2017 ACC/AHA home-monitoring guidance. Values are educational bands, not a diagnosis.</string>
+    <string name="about_checksum">Release checksum SHA-256</string>
+
+    <!-- =====================================================================
+         Shared
+         ===================================================================== -->
+    <string name="common_cancel">Cancel</string>
+    <string name="common_save">Save</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_ok">OK</string>
+    <string name="common_close">Close</string>
+    <string name="common_done">Done</string>
+    <string name="common_continue">Continue</string>
+    <string name="common_today">Today</string>
+    <string name="common_yesterday">Yesterday</string>
+    <string name="common_none">—</string>
+    <string name="unit_mmhg" translatable="false">mmHg</string>
+    <string name="unit_kpa" translatable="false">kPa</string>
+    <string name="unit_bpm" translatable="false">bpm</string>
+
+    <!-- WHO / ISH stage names -->
+    <string name="stage_low">Low</string>
+    <string name="stage_normal">Normal</string>
+    <string name="stage_elevated">Elevated</string>
+    <string name="stage_grade1">Hypertension grade 1</string>
+    <string name="stage_grade2">Hypertension grade 2</string>
+    <string name="stage_grade3">Hypertension grade 3</string>
+    <string name="stage_none">Not graded</string>
+
+    <string name="stage_short_low">Low</string>
+    <string name="stage_short_normal">Normal</string>
+    <string name="stage_short_elevated">Elevated</string>
+    <string name="stage_short_grade1">Grade 1</string>
+    <string name="stage_short_grade2">Grade 2</string>
+    <string name="stage_short_grade3">Crisis</string>
+
+    <string name="stage_desc_low">Below 90/60. Re-measure after resting; speak to a clinician if you feel faint.</string>
+    <string name="stage_desc_normal">Below 120/80. Keep doing what you are doing.</string>
+    <string name="stage_desc_elevated">120–139 / 80–89. Worth watching with regular home readings.</string>
+    <string name="stage_desc_grade1">140–159 / 90–99. Discuss with a clinician at your next visit.</string>
+    <string name="stage_desc_grade2">160–179 / 100–109. Contact a clinician soon.</string>
+    <string name="stage_desc_grade3">180+ / 110+. Rest, re-measure, and seek care if it persists.</string>
+
+    <!-- Additional, implemented v1 labels -->
+    <string name="menu_eyebrow">YOUR NEXT CHAPTER</string>
+    <string name="stage_optimal">Optimal</string>
+    <string name="stage_high_normal">High normal</string>
+    <string name="stage_crisis">Crisis range</string>
+    <string name="settings_system">System</string>
+    <string name="settings_light">Light</string>
+    <string name="settings_dark">Dark</string>
+    <string name="settings_biometric">Biometric app lock</string>
+    <string name="settings_biometric_body">Require your device biometric or screen lock before showing readings.</string>
+    <string name="settings_biometric_unavailable">Set up a device screen lock or strong biometric first.</string>
+    <string name="settings_privacy">Privacy and health-data information</string>
+    <string name="settings_clear_data">Erase local readings and keys</string>
+    <string name="settings_clear_data_body">Permanently removes the encrypted readings vault and local encryption keys from this device.</string>
+    <string name="settings_clear_confirm_title">Erase local data?</string>
+    <string name="settings_clear_confirm_body">This permanently deletes every stored reading and the encryption keys. This cannot be undone.</string>
+    <string name="settings_cancel">Cancel</string>
+    <string name="settings_clear_confirm">Erase data</string>
+    <string name="settings_cleared">Local data and keys erased</string>
+
+
+    <string name="monitor_eyebrow">BLUETOOTH CUFF</string>
+    <string name="monitor_title">Connect a monitor</string>
+    <string name="monitor_intro">Find a cuff that advertises the Bluetooth SIG Blood Pressure Service (0x1810). The app works offline; measurements are encrypted locally as soon as they arrive.</string>
+    <string name="monitor_manual_title">No cuff nearby?</string>
+    <string name="monitor_manual_body">You can enter a reading by hand. For Bluetooth, the cuff must support the standard Blood Pressure Service (IEEE 11073-10407 / GATT 0x1810). Some brands use private protocols and are not supported yet.</string>
+    <string name="monitor_scan">Scan for monitors</string>
+    <string name="monitor_scan_again">Scan again</string>
+    <string name="monitor_devices">Nearby monitors</string>
+    <string name="monitor_none">No compatible cuff found. Wake the monitor, keep it close, and try again.</string>
+    <string name="monitor_ready">Start a measurement on your cuff. It will be saved encrypted here.</string>
+    <string name="monitor_permission">Bluetooth permission is needed to discover and connect to a cuff. AfyaLink does not use Bluetooth to track location.</string>
+    <string name="monitor_saved">Monitor reading saved and encrypted</string>
+    <string name="monitor_connection_lost">Connection lost. Your stored readings are safe.</string>
+    <string name="monitor_not_supported">This monitor does not expose the standard blood-pressure service. Manual entry is still available.</string>
+    <string name="monitor_turn_on_bluetooth">Turn on Bluetooth to search for a cuff.</string>
+
+</resources>

@@ -1,0 +1,112 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Single source of truth for the app identity. CI overrides with
+// -Pafyalink.versionName=<x.y.z> -Pafyalink.versionCode=<n>
+def afyalinkVersionName = (project.findProperty('afyalink.versionName') ?: '1.0.0').toString()
+def afyalinkVersionCode = (project.findProperty('afyalink.versionCode') ?: '1').toString().toInteger()
+
+// Signing material: signing/keystore.properties (committed demo key) or the
+// same keys injected as environment variables by CI secrets.
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('../signing/keystore.properties')
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+}
+def envStoreFile = System.getenv('AFYALINK_KEYSTORE_FILE')
+if (envStoreFile) {
+    keystoreProperties.setProperty('storeFile', envStoreFile)
+    keystoreProperties.setProperty('storePassword', System.getenv('AFYALINK_KEYSTORE_PASSWORD') ?: '')
+    keystoreProperties.setProperty('keyAlias', System.getenv('AFYALINK_KEY_ALIAS') ?: 'afyalink')
+    keystoreProperties.setProperty('keyPassword', System.getenv('AFYALINK_KEY_PASSWORD') ?: '')
+}
+def resolveStoreFile = {
+    def raw = keystoreProperties.getProperty('storeFile')
+    if (raw == null) return null
+    // Paths in signing/keystore.properties are written relative to android/ ,
+    // so resolve against the root project first, then against this module.
+    def candidates = [rootProject.file(raw), file(raw), new File(raw)]
+    for (c in candidates) {
+        if (c != null && c.exists()) return c
+    }
+    return null
+}
+
+android {
+    namespace 'com.afyalink.app'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.afyalink.app'
+        minSdk 26
+        targetSdk 35
+        versionCode afyalinkVersionCode
+        versionName afyalinkVersionName
+        resourceConfigurations += ['en']
+        vectorDrawables.generatedDensities = []
+    }
+
+    signingConfigs {
+        release {
+            def store = resolveStoreFile()
+            if (store != null) {
+                storeFile store
+                storeType 'PKCS12'
+                storePassword keystoreProperties.getProperty('storePassword')
+                keyAlias keystoreProperties.getProperty('keyAlias')
+                keyPassword keystoreProperties.getProperty('keyPassword')
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-debug'
+        }
+        release {
+            // Kept off for v1.0.0 so that resource-name reflection in custom
+            // views can never be stripped. See docs/RELEASE-PROCESS.md.
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            def store = resolveStoreFile()
+            if (store != null) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        buildConfig true
+        viewBinding false
+    }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+
+    packaging {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE*', 'META-INF/NOTICE*', 'DebugProbesKt.bin']
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.work:work-runtime:2.9.1'
+    implementation 'androidx.biometric:biometric:1.1.0'
+
+    testImplementation 'junit:junit:4.13.2'
+}

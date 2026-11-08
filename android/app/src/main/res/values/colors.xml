@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- =====================================================================
+         Brand palette — sampled straight from brand/afyalink-logo.svg
+         ===================================================================== -->
+    <color name="brand_teal">#FF095D7E</color>
+    <color name="brand_teal_logo">#FF095D7E</color>
+    <color name="menu_button_surface">#FFF6F4EF</color>
+    <color name="brand_teal_deep">#FF074A66</color>
+    <color name="brand_teal_soft">#FFE6EFF2</color>
+    <color name="brand_ink">#FF141717</color>
+    <color name="brand_white">#FFFFFFFF</color>
+    <!-- Launcher canvas: intentionally identical in light and dark so the mark reads the same on every home screen -->
+    <color name="launcher_background">#FFF6F4EF</color>
+
+    <!-- =====================================================================
+         Neutral surfaces — warm off-white, Apple-ish
+         ===================================================================== -->
+    <color name="canvas">#FFF6F4EF</color>
+    <color name="surface">#FFFFFFFF</color>
+    <color name="surface_alt">#FFFBF9F5</color>
+    <color name="surface_sunken">#FFEFECE4</color>
+    <color name="hairline">#FFE6E1D6</color>
+    <color name="scrim">#66000000</color>
+    <color name="ripple_ink">#1F141717</color>
+    <color name="ripple_on_brand">#33FFFFFF</color>
+
+    <color name="text_primary">#FF14181A</color>
+    <color name="text_secondary">#FF5E6A6C</color>
+    <color name="text_tertiary">#FF939B9B</color>
+    <color name="text_on_brand">#FFFFFFFF</color>
+    <color name="text_on_brand_muted">#B3FFFFFF</color>
+
+    <!-- =====================================================================
+         WHO / ISH blood-pressure stages.
+         normal = soft sage · elevated -> amber ramp · critical = warning red
+         ===================================================================== -->
+    <color name="stage_normal">#FFA9C4A0</color>
+    <color name="stage_normal_soft">#FFDCE8D8</color>
+    <color name="stage_normal_ink">#FF2E6B47</color>
+
+    <color name="stage_elevated">#FFE9CE8F</color>
+    <color name="stage_elevated_soft">#FFF7EAD0</color>
+    <color name="stage_elevated_ink">#FF7C5C12</color>
+
+    <color name="stage_grade1">#FFE6AE5C</color>
+    <color name="stage_grade1_soft">#FFF9E2C4</color>
+    <color name="stage_grade1_ink">#FF7A4E10</color>
+
+    <color name="stage_grade2">#FFDD8642</color>
+    <color name="stage_grade2_soft">#FFFADBC6</color>
+    <color name="stage_grade2_ink">#FF7B3E12</color>
+
+    <color name="stage_grade3">#FFC63C34</color>
+    <color name="stage_grade3_soft">#FFF8DAD6</color>
+    <color name="stage_grade3_ink">#FF8C241E</color>
+
+    <color name="stage_low">#FF9DB4C0</color>
+    <color name="stage_low_soft">#FFE1E9ED</color>
+    <color name="stage_low_ink">#FF3A5A6B</color>
+
+    <color name="stage_neutral">#FFC9CECB</color>
+    <color name="stage_neutral_soft">#FFF0F0EC</color>
+    <color name="stage_neutral_ink">#FF56605F</color>
+
+    <!-- Utility -->
+    <color name="success">#FF2E6B47</color>
+    <color name="warning">#FFB8781F</color>
+    <color name="danger">#FFC63C34</color>
+    <color name="transparent">#00000000</color>
+</resources>
