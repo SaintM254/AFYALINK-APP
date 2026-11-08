@@ -6,6 +6,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,7 +57,7 @@ public final class MainActivity extends BaseActivity {
 
         LinearLayout.LayoutParams latestSpacing = new LinearLayout.LayoutParams(-1, -2);
         latestSpacing.topMargin = Ui.dp(this, 18);
-        latestSpacing.bottomMargin = Ui.dp(this, 14);
+        latestSpacing.bottomMargin = Ui.dp(this, 22);
         content.addView(renderLatest(rows), latestSpacing);
         renderQuickEntry();
         renderNavigation();
@@ -105,7 +106,40 @@ public final class MainActivity extends BaseActivity {
         LinearLayout.LayoutParams metaParams = new LinearLayout.LayoutParams(-1, -2);
         metaParams.topMargin = Ui.dp(this, 6);
         card.addView(metaRow, metaParams);
+
+        View statsDivider = ScreenUi.hairline(this);
+        LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(-1, Ui.dp(this, 1));
+        dividerParams.topMargin = Ui.dp(this, 13);
+        dividerParams.bottomMargin = Ui.dp(this, 10);
+        card.addView(statsDivider, dividerParams);
+
+        com.afyalink.app.util.Format.ListStats week = com.afyalink.app.storage.AppData.stats(rows);
+        String average = com.afyalink.app.util.Format.average(week);
+        if (week.count > 0) average += " mmHg";
+        LinearLayout statsRow = ScreenUi.horizontal(this);
+        statsRow.setGravity(Gravity.CENTER_VERTICAL);
+        addDashboardStat(statsRow, R.string.dash_average, average, true);
+        addDashboardStat(statsRow, R.string.dash_count, String.valueOf(rows.size()), false);
+        card.addView(statsRow);
         return card;
+    }
+
+    private void addDashboardStat(LinearLayout row, int labelRes, String value, boolean first) {
+        LinearLayout column = new LinearLayout(this);
+        column.setOrientation(LinearLayout.VERTICAL);
+        column.setGravity(first ? Gravity.START : Gravity.END);
+        TextView label = ScreenUi.eyebrow(this, getString(labelRes).toUpperCase());
+        label.setTextSize(9);
+        label.setGravity(first ? Gravity.START : Gravity.END);
+        column.addView(label);
+        TextView number = ScreenUi.text(this, value, 16, Ui.color(this, R.color.text_primary), true);
+        number.setGravity(first ? Gravity.START : Gravity.END);
+        LinearLayout.LayoutParams numberParams = new LinearLayout.LayoutParams(-1, -2);
+        numberParams.topMargin = Ui.dp(this, 4);
+        column.addView(number, numberParams);
+        LinearLayout.LayoutParams columnParams = new LinearLayout.LayoutParams(0, -2, 1f);
+        if (!first) columnParams.leftMargin = Ui.dp(this, 10);
+        row.addView(column, columnParams);
     }
 
     private void renderQuickEntry() {
@@ -180,6 +214,7 @@ public final class MainActivity extends BaseActivity {
         save.setOnClickListener(v -> saveQuickReading());
 
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(-1, -2);
+        cardParams.topMargin = Ui.dp(this, 4);
         content.addView(card, cardParams);
         updateMapPreview();
     }
@@ -260,20 +295,22 @@ public final class MainActivity extends BaseActivity {
     private int parse(EditText field) { return Integer.parseInt(field.getText().toString().trim()); }
 
     private void renderNavigation() {
+        // Keep the two most-used destinations docked above the system navigation bar.
+        // The long entry form remains in the scroll view, so neither button is clipped.
         LinearLayout nav = ScreenUi.horizontal(this);
+        nav.setPadding(Ui.dp(this, 20), Ui.dp(this, 10), Ui.dp(this, 20), Ui.dp(this, 8));
+        nav.setBackgroundColor(Ui.color(this, R.color.canvas));
         TextView readings = navButton(getString(R.string.menu_readings));
         readings.setOnClickListener(v -> go(HistoryActivity.class));
         TextView trends = navButton(getString(R.string.menu_trends));
         trends.setOnClickListener(v -> go(TrendsActivity.class));
-        LinearLayout.LayoutParams first = new LinearLayout.LayoutParams(0, Ui.dp(this, 48), 1f);
-        first.topMargin = Ui.dp(this, 12);
+        LinearLayout.LayoutParams first = new LinearLayout.LayoutParams(0, Ui.dp(this, 52), 1f);
         first.rightMargin = Ui.dp(this, 6);
         nav.addView(readings, first);
-        LinearLayout.LayoutParams second = new LinearLayout.LayoutParams(0, Ui.dp(this, 48), 1f);
-        second.topMargin = Ui.dp(this, 12);
+        LinearLayout.LayoutParams second = new LinearLayout.LayoutParams(0, Ui.dp(this, 52), 1f);
         second.leftMargin = Ui.dp(this, 6);
         nav.addView(trends, second);
-        content.addView(nav);
+        page.addView(nav, new LinearLayout.LayoutParams(-1, -2));
     }
 
     private TextView navButton(String text) {

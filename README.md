@@ -1,18 +1,20 @@
 # Afyalink Android
 
-**Afyalink v1.1.2** is an offline-first blood-pressure log for Android. Manual readings are encrypted with AES-256-GCM before they are written to the app's private, no-backup vault. The monitor screen is hidden for now; the existing Bluetooth SIG Blood Pressure Service adapter is reserved for a later release. If a device's Android Keystore AES provider fails, v1.1.2 falls back to AES-GCM with a random key in app-private no-backup storage so local entries remain usable; that fallback is less resistant to rooted-device extraction.
+**Afyalink v1.1.3** is an offline-first blood-pressure log for Android. Manual readings are encrypted with AES-256-GCM before they are written to the app's private, no-backup vault. The monitor screen is hidden for now; the existing Bluetooth SIG Blood Pressure Service adapter is reserved for a later release. If a device's Android Keystore AES provider fails, the app falls back to AES-GCM with a random key in app-private no-backup storage so local entries remain usable; that fallback is less resistant to rooted-device extraction.
 
 The app has no `INTERNET` permission. Its demo sync performs a real RSA-3072 OAEP + AES-256-GCM envelope round-trip against a device-local relay and then discards the payload. **No reading is transmitted to a server.** A production relay stays disabled until the owner has completed the required legal, privacy, security, operational and vendor reviews.
 
 > **Demo security warning:** the release APK is signed with the repository's intentionally public demo keystore. This allows reproducible sideload builds, but anyone can obtain that signing key. Do not use it for Google Play, sensitive production data, or trusted upgrade signing. See [`signing/README.md`](signing/README.md).
 
-## Included in v1.1.2
+## Included in v1.1.3
 
 - Dashboard-first manual logging: systolic, diastolic and optional pulse fields are ready as soon as the app opens; readings are encrypted and saved locally without a sync dependency.
 - Automatic MAP calculation using (SBP + 2 × DBP) ÷ 3, shown with each reading; the readings section explains SBP, DBP, MAP and educational category bands.
 - Encrypted local reading history and stage summaries; no cloud account or internet connection required.
-- WHO/ISH-style educational bands using sage, amber and warning red. These are not diagnoses.
-- Trends, local daily reminders, a compact Dashboard / Readings / Trends / Reminders / Settings menu, profile greeting, and three-way Light / Dark / System appearance controls.
+- WHO/ISH-style educational bands using sage, amber and warning red; the 130–139 / 85–89 band is labelled Elevated. These are not diagnoses.
+- The latest-reading card includes a 7-day average and total count; Readings and Trends remain docked above the system navigation bar.
+- A lower, inset one-hand menu, icon-only Sun / Moon / System appearance controls, and aspect-correct branding on the About screen.
+- Trends, local daily reminders, and an editable profile greeting.
 - Accessible, full-screen teal menu based on the repository logo, day/night palettes, and the complete logo composition in the launcher icon.
 - Pluggable `IReadingSync` boundary with a local-only demo implementation.
 
@@ -33,7 +35,7 @@ The repository workflow is `.github/workflows/android-release.yml`. It builds au
 
 1. If Actions are disabled, open [Repository Actions settings](https://github.com/SaintM254/AFYALINK-APP/settings/actions), allow GitHub Actions, and save.
 2. A push to `arena/9067e9fc-afyalink-app` starts **Android release** automatically. Open [the Actions page](https://github.com/SaintM254/AFYALINK-APP/actions), wait for that run, and download `app-release.apk` and `SHA256SUMS.txt` from its **Artifacts** section.
-3. Open [New release targeting the working branch](https://github.com/SaintM254/AFYALINK-APP/releases/new?target=arena%2F9067e9fc-afyalink-app). Enter tag `v1.1.2`, choose the working branch as the tag target if GitHub asks, set the title to **Afyalink v1.1.2**, attach the downloaded APK and checksum, and publish.
+3. Open [New release targeting the working branch](https://github.com/SaintM254/AFYALINK-APP/releases/new?target=arena%2F9067e9fc-afyalink-app). Enter tag `v1.1.3`, choose the working branch as the tag target if GitHub asks, set the title to **Afyalink v1.1.3**, attach the downloaded APK and checksum, and publish.
 
 The tag build also attempts to attach its APK and checksum automatically. The branch remains unmerged; this release process does not require merging app code into `main`.
 

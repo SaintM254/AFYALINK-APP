@@ -5,10 +5,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class BpStageTest {
-    @Test public void classifiesOptimalNormalAndHighNormalBands() {
+    @Test public void classifiesOptimalNormalAndElevatedBands() {
         assertEquals(BpStage.OPTIMAL, BpStage.classify(119, 79));
         assertEquals(BpStage.NORMAL, BpStage.classify(125, 82));
-        assertEquals(BpStage.HIGH_NORMAL, BpStage.classify(135, 87));
+        assertEquals(BpStage.ELEVATED, BpStage.classify(135, 87));
+        assertEquals(BpStage.ELEVATED, BpStage.classify(130, 84));
+        assertEquals(BpStage.ELEVATED, BpStage.classify(129, 85));
     }
 
     @Test public void higherCategoryWinsWhenPressureNumbersDiffer() {

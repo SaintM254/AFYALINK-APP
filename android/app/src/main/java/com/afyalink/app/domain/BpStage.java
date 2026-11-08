@@ -14,7 +14,7 @@ public enum BpStage {
     LOW(R.string.stage_low, R.color.stage_low_soft, R.color.stage_low_ink, 0),
     OPTIMAL(R.string.stage_optimal, R.color.stage_normal_soft, R.color.stage_normal_ink, 1),
     NORMAL(R.string.stage_normal, R.color.stage_normal_soft, R.color.stage_normal_ink, 2),
-    HIGH_NORMAL(R.string.stage_high_normal, R.color.stage_elevated_soft, R.color.stage_elevated_ink, 3),
+    ELEVATED(R.string.stage_elevated, R.color.stage_elevated_soft, R.color.stage_elevated_ink, 3),
     GRADE_1(R.string.stage_grade1, R.color.stage_grade1_soft, R.color.stage_grade1_ink, 4),
     GRADE_2(R.string.stage_grade2, R.color.stage_grade2_soft, R.color.stage_grade2_ink, 5),
     GRADE_3(R.string.stage_grade3, R.color.stage_grade3_soft, R.color.stage_grade3_ink, 6),
@@ -40,7 +40,7 @@ public enum BpStage {
         if (systolic >= 180 || diastolic >= 110) return GRADE_3;
         if (systolic >= 160 || diastolic >= 100) return GRADE_2;
         if (systolic >= 140 || diastolic >= 90) return GRADE_1;
-        if (systolic >= 130 || diastolic >= 85) return HIGH_NORMAL;
+        if (systolic >= 130 || diastolic >= 85) return ELEVATED;
         if (systolic < 120 && diastolic < 80) return OPTIMAL;
         return NORMAL;
     }

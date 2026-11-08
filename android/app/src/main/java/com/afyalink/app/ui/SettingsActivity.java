@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import com.afyalink.app.R;
 import com.afyalink.app.security.VaultKeyManager;
 import com.afyalink.app.storage.EncryptedReadingStore;
 import com.afyalink.app.storage.SettingsStore;
+import com.afyalink.app.util.Lucide;
 import com.afyalink.app.util.Ui;
 
 public final class SettingsActivity extends BaseActivity {
@@ -89,9 +92,9 @@ public final class SettingsActivity extends BaseActivity {
 
         LinearLayout choices = ScreenUi.horizontal(this);
         choices.setGravity(Gravity.CENTER_VERTICAL);
-        addAppearanceChoice(choices, "light", R.string.settings_theme_light);
-        addAppearanceChoice(choices, "dark", R.string.settings_theme_dark);
-        addAppearanceChoice(choices, "system", R.string.settings_theme_system);
+        addAppearanceChoice(choices, "light", R.string.settings_theme_light, Lucide.SUN);
+        addAppearanceChoice(choices, "dark", R.string.settings_theme_dark, Lucide.MOON);
+        addAppearanceChoice(choices, "system", R.string.settings_theme_system, Lucide.SYSTEM);
         LinearLayout.LayoutParams choicesParams = new LinearLayout.LayoutParams(-1, Ui.dp(this, 46));
         choicesParams.topMargin = Ui.dp(this, 12);
         card.addView(choices, choicesParams);
@@ -100,17 +103,23 @@ public final class SettingsActivity extends BaseActivity {
         content.addView(card, cardParams);
     }
 
-    private void addAppearanceChoice(LinearLayout parent, String value, int labelRes) {
+    private void addAppearanceChoice(LinearLayout parent, String value, int labelRes, int iconRes) {
         boolean selected = value.equals(settings.appearance());
-        TextView choice = ScreenUi.text(this, getString(labelRes), 12,
-                Ui.color(this, selected ? R.color.text_on_brand : R.color.text_secondary), true);
-        choice.setGravity(Gravity.CENTER);
+        FrameLayout choice = new FrameLayout(this);
         choice.setBackground(Ui.roundedBox(this,
                 Ui.color(this, selected ? R.color.brand_teal : R.color.surface_alt), 12,
                 Ui.color(this, selected ? R.color.brand_teal : R.color.hairline), 1));
         choice.setFocusable(true);
         choice.setClickable(true);
-        choice.setContentDescription(getString(labelRes));
+        choice.setSelected(selected);
+        choice.setContentDescription(getString(labelRes) + (selected ? ", selected" : ""));
+        ImageView icon = new ImageView(this);
+        icon.setImageResource(iconRes);
+        icon.setImageTintList(android.content.res.ColorStateList.valueOf(
+                Ui.color(this, selected ? R.color.text_on_brand : R.color.text_secondary)));
+        icon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(Ui.dp(this, 24), Ui.dp(this, 24), Gravity.CENTER);
+        choice.addView(icon, iconParams);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, -1, 1f);
         if (parent.getChildCount() > 0) params.leftMargin = Ui.dp(this, 6);
         parent.addView(choice, params);

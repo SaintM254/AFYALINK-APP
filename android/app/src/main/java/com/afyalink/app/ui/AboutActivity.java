@@ -21,7 +21,7 @@ public final class AboutActivity extends BaseActivity {
         installPage(getString(R.string.about_title),true);
         LinearLayout brand=ScreenUi.card(this,Ui.color(this,R.color.surface),false);
         ImageView logo=new ImageView(this);logo.setImageResource(R.drawable.ic_afyalink_mark);logo.setContentDescription(getString(R.string.cd_logo));logo.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(Ui.dp(this,86),Ui.dp(this,86));lp.gravity=android.view.Gravity.CENTER_HORIZONTAL;brand.addView(logo,lp);
+        LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(Ui.dp(this,71.4f),Ui.dp(this,96));lp.gravity=android.view.Gravity.CENTER_HORIZONTAL;brand.addView(logo,lp);
         TextView word=ScreenUi.title(this,getString(R.string.wordmark));word.setGravity(android.view.Gravity.CENTER);word.setLetterSpacing(.06f);
         LinearLayout.LayoutParams wp=new LinearLayout.LayoutParams(-1,-2);wp.topMargin=Ui.dp(this,10);brand.addView(word,wp);
         TextView tag=ScreenUi.paragraph(this,getString(R.string.tagline));tag.setGravity(android.view.Gravity.CENTER);tag.setLetterSpacing(.12f);tag.setTextSize(10);

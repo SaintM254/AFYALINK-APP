@@ -35,7 +35,7 @@ public final class StageScaleView extends View {
                 ContextCompat.getColor(context, R.color.stage_grade2),
                 ContextCompat.getColor(context, R.color.stage_grade3)
         };
-        labels = new String[] {"Low", "Normal", "High normal", "Grade 1", "Grade 2", "Grade 3+"};
+        labels = new String[] {"Low", "Normal", context.getString(R.string.stage_elevated), "Grade 1", "Grade 2", "Grade 3+"};
         if (attrs != null) {
             android.content.res.TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.StageScaleView);
             showLabels = a.getBoolean(R.styleable.StageScaleView_afya_showLabels, false);
@@ -52,7 +52,7 @@ public final class StageScaleView extends View {
             case LOW: markerValue = 1; break;
             case OPTIMAL:
             case NORMAL: markerValue = 2; break;
-            case HIGH_NORMAL: markerValue = 3; break;
+            case ELEVATED: markerValue = 3; break;
             case GRADE_1: markerValue = 4; break;
             case GRADE_2: markerValue = 5; break;
             case GRADE_3:

@@ -155,8 +155,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         menuScroll.setClipToPadding(false);
         LinearLayout items = new LinearLayout(this);
         items.setOrientation(LinearLayout.VERTICAL);
-        items.setGravity(Gravity.END);
-        items.setPadding(Ui.dp(this, 20), 0, Ui.dp(this, 26), Ui.dp(this, 14));
+        items.setGravity(Gravity.START);
+        // Place the menu labels inside the lower, inset area shown in the reference,
+        // with full-width touch targets that are easier to reach one-handed.
+        items.setPadding(Ui.dp(this, 82), Ui.dp(this, 100), Ui.dp(this, 24), Ui.dp(this, 14));
         menuScroll.addView(items, new ScrollView.LayoutParams(-1, -2));
         overlay.addView(menuScroll, new LinearLayout.LayoutParams(-1, 0, 1f));
 
@@ -192,9 +194,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         item.setTextSize(size);
         item.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
         item.setLetterSpacing(-0.025f);
-        item.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
+        item.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
         item.setIncludeFontPadding(false);
-        item.setPadding(Ui.dp(this, 12), Ui.dp(this, 12), 0, Ui.dp(this, 12));
+        item.setPadding(Ui.dp(this, 12), Ui.dp(this, 12), Ui.dp(this, 8), Ui.dp(this, 12));
         item.setMinHeight(Ui.dp(this, 58));
         item.setBackgroundResource(android.R.drawable.list_selector_background);
         item.setOnClickListener(v -> { hideMenu(); if (screen == MainActivity.class) { if (!(this instanceof MainActivity)) go(screen); } else go(screen); });

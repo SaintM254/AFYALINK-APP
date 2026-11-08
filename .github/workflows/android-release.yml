@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       publish_release:
-        description: Create or update the Afyalink v1.0.0 GitHub Release after building
+        description: Create or update the Afyalink v1.1.3 GitHub Release after building
         required: true
         type: boolean
         default: true
@@ -43,7 +43,7 @@ jobs:
           if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
             VERSION="${GITHUB_REF_NAME#v}"
           else
-            VERSION="1.0.0"
+            VERSION="1.1.3"
           fi
           echo "name=$VERSION" >> "$GITHUB_OUTPUT"
 
@@ -102,8 +102,9 @@ jobs:
 
           - Offline-first blood-pressure tracking; measurements are encrypted and saved on the device.
           - Compatible local vault encryption with an AES-GCM sandbox fallback for devices whose Android Keystore AES provider fails.
-          - Dashboard-first manual entry with automatic MAP calculation using (SBP + 2 × DBP) ÷ 3.
-          - Clear navigation, editable greeting name, and direct Light / Dark / System appearance controls.
+          - Dashboard-first manual entry with automatic MAP calculation using (SBP + 2 × DBP) ÷ 3, plus a 7-day average and reading count.
+          - One-hand-friendly lower menu, docked Readings / Trends buttons, and Sun / Moon / System appearance icons.
+          - About-screen logo keeps its correct aspect ratio; the 130–139 / 85–89 category is labelled Elevated.
           - Readings section explains SBP, DBP, MAP and educational blood-pressure categories.
           - Demo relay only: the encrypted exchange is verified locally and no readings are uploaded.
           - This build uses the repository's public demo signing key. Do not use it for Play Store distribution or sensitive production deployment.

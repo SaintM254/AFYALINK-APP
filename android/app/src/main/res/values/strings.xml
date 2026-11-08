@@ -66,7 +66,7 @@
     <string name="local_save_failed">Could not save this reading on the device. Please try again.</string>
     <string name="readings_key_title">Understand your readings</string>
     <string name="readings_key_body">SBP (Systolic Blood Pressure) is the top number; DBP (Diastolic Blood Pressure) is the bottom number. MAP (Mean Arterial Pressure) is estimated as (SBP + 2 × DBP) ÷ 3. Categories are educational guidance, not a diagnosis.</string>
-    <string name="readings_scale_ranges">Ranges in mmHg (SBP / DBP): Low &lt;90 / &lt;60 · Optimal &lt;120 / &lt;80 · Normal 120–129 / 80–84 · High normal 130–139 / 85–89 · Grade 1 140–159 / 90–99 · Grade 2 160–179 / 100–109 · Grade 3 180+ / 110+. If numbers fall in different bands, the higher band is shown.</string>
+    <string name="readings_scale_ranges">Ranges in mmHg (SBP / DBP): Low &lt;90 / &lt;60 · Optimal &lt;120 / &lt;80 · Normal 120–129 / 80–84 · Elevated 130–139 / 85–89 · Grade 1 140–159 / 90–99 · Grade 2 160–179 / 100–109 · Grade 3 180+ / 110+. If numbers fall in different bands, the higher band is shown.</string>
     <string name="map_value">MAP · %1$d mmHg</string>
     <string name="dash_latest">Latest reading</string>
     <string name="dash_empty_title">No readings yet</string>
@@ -300,7 +300,7 @@
     <string name="about_disclaimer_title">Not a medical device</string>
     <string name="about_disclaimer_body">AfyaLink records what your monitor shows and grades it against published WHO / ISH bands. It does not diagnose, treat or replace a clinician. In an emergency call your local emergency number.</string>
     <string name="about_privacy_title">Your data stays yours</string>
-    <string name="about_privacy_body">Readings are encrypted with AES-256-GCM before they touch the filesystem. The keys live in the Android Keystore and never leave the device. Sync is a local demo relay by default.</string>
+    <string name="about_privacy_body">Readings are encrypted with AES-256-GCM before they touch the filesystem. The Android Keystore is preferred; if its AES provider fails, a random key stays in this app’s private no-backup storage. Sync is a local demo relay by default.</string>
     <string name="about_source_title">Source and licence</string>
     <string name="about_source_body">AfyaLink is released as a signed APK from GitHub Releases. The project is public — issues and pull requests are welcome.</string>
     <string name="about_open_repo">Open the repository</string>
@@ -342,8 +342,8 @@
     <string name="stage_short_grade3">Crisis</string>
 
     <string name="stage_desc_low">Below 90/60. Re-measure after resting; speak to a clinician if you feel faint.</string>
-    <string name="stage_desc_normal">Below 120/80. Keep doing what you are doing.</string>
-    <string name="stage_desc_elevated">120–139 / 80–89. Worth watching with regular home readings.</string>
+    <string name="stage_desc_normal">120–129 / 80–84. Keep doing what you are doing.</string>
+    <string name="stage_desc_elevated">130–139 / 85–89. Worth watching with regular home readings.</string>
     <string name="stage_desc_grade1">140–159 / 90–99. Discuss with a clinician at your next visit.</string>
     <string name="stage_desc_grade2">160–179 / 100–109. Contact a clinician soon.</string>
     <string name="stage_desc_grade3">180+ / 110+. Rest, re-measure, and seek care if it persists.</string>
@@ -351,7 +351,6 @@
     <!-- Additional, implemented v1 labels -->
     <string name="menu_eyebrow">YOUR NEXT CHAPTER</string>
     <string name="stage_optimal">Optimal</string>
-    <string name="stage_high_normal">High normal</string>
     <string name="stage_crisis">Crisis range</string>
     <string name="settings_system">System</string>
     <string name="settings_light">Light</string>
