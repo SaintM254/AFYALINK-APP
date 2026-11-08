@@ -49,12 +49,22 @@ jobs:
 
       - name: Build release APK
         working-directory: android
+        shell: bash
         run: |
+          set +e
           gradle --version
-          gradle --no-daemon --stacktrace \
+          gradle --no-daemon --stacktrace --console=plain \
             -Pafyalink.versionName='${{ steps.version.outputs.name }}' \
             -Pafyalink.versionCode='${{ github.run_number }}' \
-            testReleaseUnitTest assembleRelease
+            testReleaseUnitTest assembleRelease > build.log 2>&1
+          RESULT=$?
+          cat build.log
+          if [[ "$RESULT" -ne 0 ]]; then
+            echo "::group::Gradle error details"
+            tail -n 60 build.log | sed 's/^/::error::/'
+            echo "::endgroup::"
+          fi
+          exit "$RESULT"
 
       - name: Calculate SHA-256
         id: checksum
